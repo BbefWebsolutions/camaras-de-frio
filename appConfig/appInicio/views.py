@@ -21,11 +21,24 @@ from appCliente.models import Cliente
 # Create your views here.
 
 def inicio(request):
+    _data = []
     _camaras = Camara.objects.filter(registroActivo=True)
     _regiones = Region.objects.filter(registroActivo=True)
     _comunas = Comuna.objects.filter(registroActivo=True)
+    for _camara in _camaras:
+        _neto = ('{:,.0f}'.format(_camara.valorNeto)).replace(',', '.')
+        _iva = ('{:,.0f}'.format(_camara.valorIva)).replace(',', '.')
+        _item = {
+            'nombre': _camara.nombre,
+            'm2': str(_camara.m2).replace('.', ','),
+            'm3': str(_camara.m3).replace('.', ','),
+            'valorNeto': _neto,
+            'valorIva': _iva,
+        }
+        _data.append(_item)
+        
     _context = {
-        'camaras': _camaras,
+        'camaras': _data,
         'regiones': _regiones,
         'comunas': _comunas,
     }

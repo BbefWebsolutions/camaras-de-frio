@@ -707,7 +707,7 @@ p.ver_peso, p.ver_uf, p.ver_peso2, p.ver_uf2{
 }
 
 th {
-    font-size: 1vw;
+    font-size: 0.9vw;
     font-weight: 300 !important;
     color: rgb(0, 0, 0);
     padding: 2px !important;
@@ -715,7 +715,7 @@ th {
   }
 
   td {
-    font-size: 1vw;
+    font-size: 0.9vw;
     padding: 2px !important;
     margin: 2px !important;
   }
@@ -725,13 +725,56 @@ th {
     padding: 0 !important;
     margin: 0 !important;
   }
+  @media only screen and (max-width: 1000px) {
+    td {
+        font-size: 1vw;
+    }
+
+    th {
+        font-size: 1vw;
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    td {
+        font-size: 1.1vw;
+    }
+
+    th {
+        font-size: 1.1vw;
+    }
+  }
 
   @media only screen and (max-width: 600px) {
     #id-check-control {
       transform: scale(0.6);
     }
 
+    td {
+    font-size: 1.2vw;
+    }
+
     th {
       font-size: 1.2vw;
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    td {
+        font-size: 1.8vw;
+    }
+
+    th {
+        font-size: 1.8vw;
+    }
+  }
+
+  @media only screen and (max-width: 200px) {
+    td {
+        font-size: 2vw;
+    }
+
+    th {
+        font-size: 2vw;
     }
   }
