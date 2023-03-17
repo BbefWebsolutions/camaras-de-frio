@@ -1,5 +1,4 @@
 from decimal import Decimal
-from types import NoneType
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -59,7 +58,8 @@ def enviarCorreoCliente(request):
         _correo = request.POST.get('correo-cliente')
         _camara = Camara.objects.get(id=int(request.POST.get('numero-camara')))
         _checkbox = request.POST.get('check-datos-cliente')
-        if type(_checkbox) is NoneType: # Cuando solo se debe enviar correo sin datos de cliente
+        if _checkbox is None: # Cuando solo se debe enviar correo sin datos de cliente
+            print('none type es ')
             # sendEmail(_correo, _camara)
             _respuesta = 1
         else:
