@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Inicio{% endblock %}
+
+{% block container %}
+<br><br>
+<div class="col-12">
+  <h4 class='text-center'>Listado de Camaras de Frio</h4>
+</div>
+
+<div class="d-grid gap-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-down"></i></button>
+    <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-up"></i></button>
+    <button type="button" class="btn btn-default" onclick="abrirModalAgregarCamara()"><i class="fa-regular fa-plus"></i></button>
+</div>
+
+<table class="table table-responsive table-bordered">
+  <thead>
+    <tr style="background-color: rgb(198, 198, 198); ">
+      <!-- <th scope="col"></th> -->
+      <th scope="col">Nombre</th>
+      <th scope="col">Metro Cuadrado</th>
+      <th scope="col">Metro Cubico</th>
+      <th scope="col">Valor Neto</th>
+      <th scope="col">Valor IVA</th>
+      <th scope="col">Botones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for camara in camaras %}
+    <tr style="font-size: 1.2vw;">
+      <!-- <th scope="row">                    
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" name="hdps" class="custom-control-input" id="id-check-control"
+                value="{{camara.id}}">
+            <label class="custom-control-label" for="{{hdp.id}}"></label>
+        </div>
+      </th> -->
+      <td>{{camara.nombre}}</td>
+      <td>{{camara.m2}}</td>
+      <td>{{camara.m3}}</td>
+      <td>{{camara.valorNeto}}</td>
+      <td>{{camara.valorIva}}</td>
+      <td id="{{camara.id}}" style="color: blue; text-decoration: underline blue; cursor: pointer;"
+        onclick="abrirModalEnviarCorreo(this)" data-bs-toggle="modal" data-bs-target="#modalEnviarCorreo">Enviar </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- <div class="demo-container">
+    <div id="gridContainer"></div>
+</div> -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalEnviarCorreo" tabindex="-1" aria-labelledby="modalEnviarCorreoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEnviarCorreoLabel">Enviar Cotización</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEnviarCorreoCliente" method="POST" action="{% url 'envio-correo-cliente' %}" data-parsley-validate>
+          {% csrf_token%}
+          <input type="hidden" id="numero-camara" name="numero-camara">
+          <div style="padding-left: 7px;" class="form-group row">
+            <div class="form-check">
+              <div class="col-sm-8">
+                <input class="form-check-input" type="checkbox" value="" id="id-check-datos-cliente" name="check-datos-cliente" onchange="mostrarFormularioCliente()">
+              </div>
+              <label class="form-check-label" for="id-check-datos-cliente">
+                Datos de Cliente
+              </label>
+            </div>
+          </div>
+
+          <div class="container-formulario-cliente" id="id-container-formulario-cliente" hidden>
+            <div class="form-group row">
+              <label for="id-nombre" class="col-sm-3 col-form-label">Nombre<span class="tx-danger">*</span></label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control" id='id-nombre' name='nombre'>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <label for="id-rut" class="col-sm-3 col-form-label">Rut<span class="tx-danger">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id='id-rut' name='rut'>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <label for="id-giro" class="col-sm-3 col-form-label">Giro Comercial<span class="tx-danger">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id='id-giro' name='giro'>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <label for="id-region" class="col-sm-3 col-form-label">Región<span class="tx-danger">*</span></label>
+                <div class="col-sm-9 mg-0 pd-0">
+                  <select class="form-select" id="id-region" name="region" onchange="buscarComunas(this)" required>
+                      <option value="-1" selected>Seleccionar</option>
+                      {% for region in regiones %}
+                      <option value="{{region.id}}">{{region.nombre}}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <label for="id-comuna" class="col-sm-3 col-form-label">Comuna<span class="tx-danger">*</span></label>
+              <div class="col-sm-9 mg-0 pd-0">
+                <select class="form-select" id="id-comuna" name="comuna" disabled required>
+                    <option value="-1" selected>Seleccionar</option>
+                </select>
+              </div>
+          </div>
+            <br>
+            <div class="form-group row">
+                <label for="id-direccion" class="col-sm-3 col-form-label">Dirección<span class="tx-danger">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id='id-direccion' name='direccion'>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <label for="id-telefono" class="col-sm-3 col-form-label">Telefono<span class="tx-danger">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id='id-telefono' name='telefono'>
+                </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label for="id-correo-cliente" class="col-sm-3 col-form-label">Correo Electronico<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id='id-correo-cliente' name='correo-cliente' required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-regular fa-circle-xmark"></i> Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnFormEnviarCorreo"><i class="fa-solid fa-envelope"></i> Enviar Cotización</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarCamara" tabindex="-1" aria-labelledby="modalAgregarCamaraLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAgregarCamaraLabel">Agregar Camara de Frio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEnviarGuardarCamara" method="POST" action="{% url 'guardar-camara-frio' %}" data-parsley-validate>
+          {% csrf_token%}
+          <div class="form-group row">
+            <label for="id-nombre-camara" class="col-sm-3 col-form-label">Nombre<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id='id-nombre-camara' name='nombre-camara'>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label for="id-metro-cuadrado" class="col-sm-3 col-form-label">Metro cuadrado<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id='id-metro-cuadrado' name='metro-cuadrado'>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label for="id-metro-cubico" class="col-sm-3 col-form-label">Metro cubico<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id='id-metro-cubico' name='metro-cubico'>
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <label for="id-valor" class="col-sm-3 col-form-label">Valor Neto<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id='id-valor' name='valor'>
+            </div>
+          </div>
+          <br>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-regular fa-circle-xmark"></i> Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnFormGuardarCamara"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block partial_js_script %}
+<script>
+function mostrarFormularioCliente(){
+    var checkBox = document.getElementById("id-check-datos-cliente");
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true){
+        $("#id-container-formulario-cliente").attr('hidden', false)
+        $("#id-nombre").attr('required', true)
+        $("#id-rut").attr('required', true)
+        $("#id-direccion").attr('required', true)
+        $("#id-telefono").attr('required', true)
+        $("#id-giro").attr('required', true)
+        $("#id-comuna").attr('required', true)
+        $("#id-region").attr('required', true)
+    } else {
+        $("#id-container-formulario-cliente").attr('hidden', true)
+        $("#id-nombre").attr('required', false)
+        $("#id-rut").attr('required', false)
+        $("#id-direccion").attr('required', false)
+        $("#id-telefono").attr('required', false)
+        $("#id-giro").attr('required', false)
+        $("#id-comuna").attr('required', false)
+        $("#id-region").attr('required', false)
+    }
+}
+
+
+  function abrirModalEnviarCorreo(value) {
+    $("#numero-camara").val(value.id)
+  }
+
+  function abrirModalAgregarCamara(){
+    $('#modalAgregarCamara').modal('show');
+  }
+
+  $(() => {
+    $('#gridContainer').dxDataGrid({
+      dataSource: "{% url 'json-listar-camaras' %}",
+      selection: {
+        mode: 'multiple',
+      },
+      columns: [{
+        caption: 'Nombre',
+        dataField: 'nombre',
+        width: 400,
+      }, {
+        dataField: 'm2',
+        caption: 'Metro Cuadrado',
+      }, {
+        dataField: 'm3',
+        caption: 'Metro Cubico',
+      }, {
+        dataField: 'neto',
+        caption: 'Valor Neto',
+      }, {
+        dataField: 'iva',
+        caption: 'Valor IVA',
+      }, {
+        type: "buttons",
+        caption: "Botones",
+        alignment: "center",
+        allowHiding: false,
+        showInColumnChooser: false,
+        buttons: [{
+          hint: "Enviar Cotización",
+          icon: "export",
+          onClick: function (e) {
+            $("#modalEnviarCorreo").show()
+          }
+        },]
+      }
+      ],
+      showBorders: true,
+    });
+  });
+
+$('#btnFormEnviarCorreo').click(function () {
+  const formulario = $('#formEnviarCorreoCliente')
+  if (formulario.parsley().validate()) {
+    abrirCargando();
+    setTimeout(function(){
+      const divDataGrid = $(this).attr('data-id-grid')
+      $.post(formulario.attr('action'), formulario.serialize(), function (response) {
+        cerrarCargando();
+        $('#modalEnviarCorreo').modal('hide');
+        if(!response.respuesta == 0){
+          notify = new PNotify({
+                title: 'Acción exitosa',
+                text: 'Correo enviado correctamente',
+                type: 'success',
+                styling: 'bootstrap3',
+                delay: 3000
+            });
+        }else{
+          notify = new PNotify({
+              title: 'Acción no se ha ejecutado',
+              text: 'No se ha podido realizar la acción',
+              type: 'error',
+              styling: 'bootstrap3',
+              delay: 3000
+          });
+        }
+      })
+    }, 2000);
+  }
+});
+
+$('#btnFormGuardarCamara').click(function () {
+  const formulario = $('#formEnviarGuardarCamara')
+  if (formulario.parsley().validate()) {
+    abrirCargando();
+    const divDataGrid = $(this).attr('data-id-grid')
+    $.post(formulario.attr('action'), formulario.serialize(), function (response) {
+        if (response.accionEjecutada) {
+            notify = new PNotify({
+                title: 'Acción exitosa',
+                text: 'Correo enviado correctamente!',
+                type: 'success',
+                styling: 'bootstrap3',
+                delay: 3000
+            });
+        }
+        else {
+            notify = new PNotify({
+                title: 'Acción no ejecutada',
+                text: 'No se ha podido realizar la acción',
+                type: 'error',
+                styling: 'bootstrap3',
+                delay: 3000
+            });
+        }
+        setTimeout(function(){location.reload();}, 3000);
+    })
+  }
+});
+
+function buscarComunas(value) {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  var _region = value.value
+  if(_region>0){
+    $.ajax({
+      url: "{% url 'json-listar-comunas' 0 %}".replace('/0', '/'+_region),
+      type: "POST",
+      headers: { "X-CSRFToken": csrftoken },
+      success: function (data) {
+        if (data.respuesta) {
+          $('#id-comuna').prop('disabled', false);
+          $('#id-comuna').html('').select({
+              data: {
+                  id: null,
+                  text: null
+              }
+          });
+          jQuery.each(data.data, function (index, value) {
+            $('#id-comuna').append($('<option>', { value: value.id, text: value.nombre }));
+          });
+        }
+      },
+      error: function(data){
+        console.log('ha ocurrido un error!')
+      }
+  })
+  }else{
+    $('#id-comuna').prop('disabled', true);
+    $('#id-comuna').append('<option value="-1" hidden selected>Seleccione</option>');
+  }
+}
+</script>
+{% endblock %}

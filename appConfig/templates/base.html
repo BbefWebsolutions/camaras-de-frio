@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Automática Ingeniería</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Listado de Camaras de Frío">
+    <meta name="author" content="BBEF">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicone.png' %}">
+    <link rel="stylesheet" href="{% static 'lib/@fortawesome/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/automatica.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/cargando.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/dev-express/css/dx.common.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/dev-express/css/dx.light.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/pnotify/dist/pnotify.buttons.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/pnotify/dist/pnotify.nonblock.css' %}">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>"https://www.google-analytics.com/analytics.js"</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXXXXXXXX"></script>
+    {% block js_header %}
+    {% endblock %}
+
+</head>
+
+<body id="navbarMenu">
+    <div class="content ht-100v pd-0">
+
+        <header class="navbar navbar-header navbar-header-fixed">
+            <div class="container">
+                <div class="row mx-auto d-block">
+                    <img src="{% static 'assets/img/banner.png' %}" class="img-fluid"
+                        alt="Responsive image">
+                </div>
+            </div>
+        </header><!-- navbar -->
+
+        <div class="content-body">
+            <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+                <!-- block container -->
+                {% block container %}
+                {% endblock %}
+                <!-- end block container -->
+            </div>
+        </div>
+    </div><!-- content -->
+
+    <div id="cargandoInformacion" class="modal fade bs-example-modal-sm" tabindex="9999999" role="dialog"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div style="text-align: center">
+                        <div class="container-cargando">
+                            <div class="div-cargando">
+                              <div class="pelotas"></div>
+                              <div class="pelotas"></div>
+                              <div class="pelotas"></div>
+                              <span class="texto-cargando">Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/41ccacd8d2.js" crossorigin="anonymous"></script>
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'lib/dev-express/js/jszip.min.js' %}"></script>
+    <script src="{% static 'lib/dev-express/js/dx.all.js' %}"></script>
+    <script src="{% static 'lib/dev-express/js/localization/dx.messages.es.js' %}"></script>
+    <script src="{% static 'lib/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'lib/parsleyjs/i18n/es.js' %}"></script>
+    <script src="{% static 'assets/js/bbefwebsolutions.js' %}"></script>
+    <script src="{% static 'assets/js/cargando.js' %}"></script>
+    <script src="{% static 'lib/pnotify/dist/pnotify.js' %}"></script>
+    <script src="{% static 'lib/pnotify/dist/pnotify.buttons.js' %}"></script>
+    <script src="{% static 'lib/pnotify/dist/pnotify.nonblock.js' %}"></script>
+    {% block partial_js_script %}{% endblock %}
+</body>
+
+</html>

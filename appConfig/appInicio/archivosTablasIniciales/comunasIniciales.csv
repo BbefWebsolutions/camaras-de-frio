@@ -1,0 +1,347 @@
+nombreProvincia,nombre,cut,area,poblacion,latitud,longitud
+Iquique,Iquique,1101,123,123,123,123
+Iquique,Alto Hospicio,1107,123,123,123,123
+Tamarugal,Pozo Almonte,1401,123,123,123,123
+Tamarugal,Camiña,1402,123,123,123,123
+Tamarugal,Colchane,1403,123,123,123,123
+Tamarugal,Huara,1404,123,123,123,123
+Tamarugal,Pica,1405,123,123,123,123
+Antofagasta,Antofagasta,2101,123,123,123,123
+Antofagasta,Mejillones,2102,123,123,123,123
+Antofagasta,Sierra Gorda,2103,123,123,123,123
+Antofagasta,Taltal,2104,123,123,123,123
+El Loa,Calama,2201,123,123,123,123
+El Loa,Ollague,2202,123,123,123,123
+El Loa,San Pedro De Atacama,2203,123,123,123,123
+Tocopilla,Tocopilla,2301,123,123,123,123
+Tocopilla,María Elena,2302,123,123,123,123
+Copiapó,Copiapó,3101,123,123,123,123
+Copiapó,Caldera,3102,123,123,123,123
+Copiapó,Tierra Amarilla,3103,123,123,123,123
+Chañaral,Chañaral,3201,123,123,123,123
+Chañaral,Diego De Almagro,3202,123,123,123,123
+Huasco,Vallenar,3301,123,123,123,123
+Huasco,Alto Del Carmen,3302,123,123,123,123
+Huasco,Freirina,3303,123,123,123,123
+Huasco,Huasco,3304,123,123,123,123
+Elqui,La Serena,4101,123,123,123,123
+Elqui,Coquimbo,4102,123,123,123,123
+Elqui,Andacollo,4103,123,123,123,123
+Elqui,La Higuera,4104,123,123,123,123
+Elqui,Paiguano,4105,123,123,123,123
+Elqui,Vicuña,4106,123,123,123,123
+Choapa,Illapel,4201,123,123,123,123
+Choapa,Canela,4202,123,123,123,123
+Choapa,Los Vilos,4203,123,123,123,123
+Choapa,Salamanca,4204,123,123,123,123
+Limarí,Ovalle,4301,123,123,123,123
+Limarí,Combarbalá,4302,123,123,123,123
+Limarí,Monte Patria,4303,123,123,123,123
+Limarí,Punitaqui,4304,123,123,123,123
+Limarí,Río Hurtado,4305,123,123,123,123
+Valparaíso,Valparaíso,5101,123,123,123,123
+Valparaíso,Casablanca,5102,123,123,123,123
+Valparaíso,Concón,5103,123,123,123,123
+Valparaíso,Juan Fernández,5104,123,123,123,123
+Valparaíso,Puchuncaví,5105,123,123,123,123
+Valparaíso,Quintero,5107,123,123,123,123
+Valparaíso,Viña Del Mar,5109,123,123,123,123
+Isla De Pascua,Isla De Pascua,5201,123,123,123,123
+Los Andes,Los Andes,5301,123,123,123,123
+Los Andes,Calle Larga,5302,123,123,123,123
+Los Andes,Rinconada,5303,123,123,123,123
+Los Andes,San Esteban,5304,123,123,123,123
+Petorca,La Ligua,5401,123,123,123,123
+Petorca,Cabildo,5402,123,123,123,123
+Petorca,Papudo,5403,123,123,123,123
+Petorca,Petorca,5404,123,123,123,123
+Petorca,Zapallar,5405,123,123,123,123
+Quillota,Quillota,5501,123,123,123,123
+Quillota,La Calera,5502,123,123,123,123
+Quillota,Hijuelas,5503,123,123,123,123
+Quillota,La Cruz,5504,123,123,123,123
+Quillota,Nogales,5506,123,123,123,123
+San Antonio,San Antonio,5601,123,123,123,123
+San Antonio,Algarrobo,5602,123,123,123,123
+San Antonio,Cartagena,5603,123,123,123,123
+San Antonio,El Quisco,5604,123,123,123,123
+San Antonio,El Tabo,5605,123,123,123,123
+San Antonio,Santo Domingo,5606,123,123,123,123
+San Felipe,San Felipe,5701,123,123,123,123
+San Felipe,Catemu,5702,123,123,123,123
+San Felipe,Llaillay,5703,123,123,123,123
+San Felipe,Panquehue,5704,123,123,123,123
+San Felipe,Putaendo,5705,123,123,123,123
+San Felipe,Santa María,5706,123,123,123,123
+Marga Marga,Quilpué,5801,123,123,123,123
+Marga Marga,Limache,5802,123,123,123,123
+Marga Marga,Olmué,5803,123,123,123,123
+Marga Marga,Villa Alemana,5804,123,123,123,123
+Cachapoal,Rancagua,6101,123,123,123,123
+Cachapoal,Codegua,6102,123,123,123,123
+Cachapoal,Coinco,6103,123,123,123,123
+Cachapoal,Coltauco,6104,123,123,123,123
+Cachapoal,Doñihue,6105,123,123,123,123
+Cachapoal,Graneros,6106,123,123,123,123
+Cachapoal,Las Cabras,6107,123,123,123,123
+Cachapoal,Machali,6108,123,123,123,123
+Cachapoal,Malloa,6109,123,123,123,123
+Cachapoal,Mostazal,6110,123,123,123,123
+Cachapoal,El Olivar,6111,123,123,123,123
+Cachapoal,Peumo,6112,123,123,123,123
+Cachapoal,Pichidegua,6113,123,123,123,123
+Cachapoal,Quinta De Tilcoco,6114,123,123,123,123
+Cachapoal,Rengo,6115,123,123,123,123
+Cachapoal,Requinoa,6116,123,123,123,123
+Cachapoal,San Vicente,6117,123,123,123,123
+Cardenal Caro,Pichilemu,6201,123,123,123,123
+Cardenal Caro,La Estrella,6202,123,123,123,123
+Cardenal Caro,Litueche,6203,123,123,123,123
+Cardenal Caro,Marchihue,6204,123,123,123,123
+Cardenal Caro,Navidad,6205,123,123,123,123
+Cardenal Caro,Paredones,6206,123,123,123,123
+Colchagua,San Fernando,6301,123,123,123,123
+Colchagua,Chépica,6302,123,123,123,123
+Colchagua,Chimbarongo,6303,123,123,123,123
+Colchagua,Lolol,6304,123,123,123,123
+Colchagua,Nancagua,6305,123,123,123,123
+Colchagua,Palmilla,6306,123,123,123,123
+Colchagua,Peralillo,6307,123,123,123,123
+Colchagua,Placilla,6308,123,123,123,123
+Colchagua,Pumanque,6309,123,123,123,123
+Colchagua,Santa Cruz,6310,123,123,123,123
+Talca,Talca,7101,123,123,123,123
+Talca,Constitución,7102,123,123,123,123
+Talca,Curepto,7103,123,123,123,123
+Talca,Empedrado,7104,123,123,123,123
+Talca,Maule,7105,123,123,123,123
+Talca,Pelarco,7106,123,123,123,123
+Talca,Pencahue,7107,123,123,123,123
+Talca,Río Claro,7108,123,123,123,123
+Talca,San Clemente,7109,123,123,123,123
+Talca,San Rafael,7110,123,123,123,123
+Cauquenes,Cauquenes,7201,123,123,123,123
+Cauquenes,Chanco,7202,123,123,123,123
+Cauquenes,Pelluhue,7203,123,123,123,123
+Curicó,Curicó,7301,123,123,123,123
+Curicó,Hualañe,7302,123,123,123,123
+Curicó,Licantén,7303,123,123,123,123
+Curicó,Molina,7304,123,123,123,123
+Curicó,Rauco,7305,123,123,123,123
+Curicó,Romeral,7306,123,123,123,123
+Curicó,Sagrada Familia,7307,123,123,123,123
+Curicó,Teno,7308,123,123,123,123
+Curicó,Vichuquén,7309,123,123,123,123
+Linares,Linares,7401,123,123,123,123
+Linares,Colbún,7402,123,123,123,123
+Linares,Longaví,7403,123,123,123,123
+Linares,Parral,7404,123,123,123,123
+Linares,Retiro,7405,123,123,123,123
+Linares,San Javier,7406,123,123,123,123
+Linares,Villa Alegre,7407,123,123,123,123
+Linares,Yerbas Buenas,7408,123,123,123,123
+Concepción,Concepción,8101,123,123,123,123
+Concepción,Coronel,8102,123,123,123,123
+Concepción,Chiguayante,8103,123,123,123,123
+Concepción,Florida,8104,123,123,123,123
+Concepción,Hualqui,8105,123,123,123,123
+Concepción,Lota,8106,123,123,123,123
+Concepción,Penco,8107,123,123,123,123
+Concepción,San Pedro de la Paz,8108,123,123,123,123
+Concepción,Santa Juana,8109,123,123,123,123
+Concepción,Talcahuano,8110,123,123,123,123
+Concepción,Tomé,8111,123,123,123,123
+Concepción,Hualpén,8112,123,123,123,123
+Arauco,Lebu,8201,123,123,123,123
+Arauco,Arauco,8202,123,123,123,123
+Arauco,Cañete,8203,123,123,123,123
+Arauco,Contulmo,8204,123,123,123,123
+Arauco,Curanilahue,8205,123,123,123,123
+Arauco,Los Alamos,8206,123,123,123,123
+Arauco,Tirua,8207,123,123,123,123
+Bío-Bío,Los Angeles,8301,123,123,123,123
+Bío-Bío,Antuco,8302,123,123,123,123
+Bío-Bío,Cabrero,8303,123,123,123,123
+Bío-Bío,Laja,8304,123,123,123,123
+Bío-Bío,Mulchén,8305,123,123,123,123
+Bío-Bío,Nacimiento,8306,123,123,123,123
+Bío-Bío,Negrete,8307,123,123,123,123
+Bío-Bío,Quilaco,8308,123,123,123,123
+Bío-Bío,Quilleco,8309,123,123,123,123
+Bío-Bío,San Rosendo,8310,123,123,123,123
+Bío-Bío,Santa Bárbara,8311,123,123,123,123
+Bío-Bío,Tucapel,8312,123,123,123,123
+Bío-Bío,Yumbel,8313,123,123,123,123
+Bío-Bío,Alto Biobío,8314,123,123,123,123
+Ñuble,Chillán,8401,123,123,123,123
+Ñuble,Bulnes,8402,123,123,123,123
+Ñuble,Cobquecura,8403,123,123,123,123
+Ñuble,Coelemu,8404,123,123,123,123
+Ñuble,Coihueco,8405,123,123,123,123
+Ñuble,Chillán Viejo,8406,123,123,123,123
+Ñuble,El Carmen,8407,123,123,123,123
+Ñuble,Ninhue,8408,123,123,123,123
+Ñuble,Ñiquén,8409,123,123,123,123
+Ñuble,Pemuco,8410,123,123,123,123
+Ñuble,Pinto,8411,123,123,123,123
+Ñuble,Portezuelo,8412,123,123,123,123
+Ñuble,Quillón,8413,123,123,123,123
+Ñuble,Quirihue,8414,123,123,123,123
+Ñuble,Ranquil,8415,123,123,123,123
+Ñuble,San Carlos,8416,123,123,123,123
+Ñuble,San Fabián,8417,123,123,123,123
+Ñuble,San Ignacio,8418,123,123,123,123
+Ñuble,San Nicolás,8419,123,123,123,123
+Ñuble,Treguaco,8420,123,123,123,123
+Ñuble,Yungay,8421,123,123,123,123
+Cautín,Temuco,9101,123,123,123,123
+Cautín,Carahue,9102,123,123,123,123
+Cautín,Cunco,9103,123,123,123,123
+Cautín,Curarrehue,9104,123,123,123,123
+Cautín,Freire,9105,123,123,123,123
+Cautín,Galvarino,9106,123,123,123,123
+Cautín,Gorbea,9107,123,123,123,123
+Cautín,Lautaro,9108,123,123,123,123
+Cautín,Loncoche,9109,123,123,123,123
+Cautín,Melipeuco,9110,123,123,123,123
+Cautín,Nueva Imperial,9111,123,123,123,123
+Cautín,Padre Las Casas,9112,123,123,123,123
+Cautín,Perquenco,9113,123,123,123,123
+Cautín,Pitrufquén,9114,123,123,123,123
+Cautín,Pucón,9115,123,123,123,123
+Cautín,Saavedra,9116,123,123,123,123
+Cautín,Teodoro Schmidt,9117,123,123,123,123
+Cautín,Toltén,9118,123,123,123,123
+Cautín,Vilcún,9119,123,123,123,123
+Cautín,Villarrica,9120,123,123,123,123
+Cautín,Cholchol,9121,123,123,123,123
+Malleco,Angol,9201,123,123,123,123
+Malleco,Collipulli,9202,123,123,123,123
+Malleco,Curacautín,9203,123,123,123,123
+Malleco,Ercilla,9204,123,123,123,123
+Malleco,Lonquimay,9205,123,123,123,123
+Malleco,Los Sauces,9206,123,123,123,123
+Malleco,Lumaco,9207,123,123,123,123
+Malleco,Puren,9208,123,123,123,123
+Malleco,Renaico,9209,123,123,123,123
+Malleco,Traiguén,9210,123,123,123,123
+Malleco,Victoria,9211,123,123,123,123
+Llanquihue,Puerto Montt,10101,123,123,123,123
+Llanquihue,Calbuco,10102,123,123,123,123
+Llanquihue,Cochamó,10103,123,123,123,123
+Llanquihue,Fresia,10104,123,123,123,123
+Llanquihue,Frutillar,10105,123,123,123,123
+Llanquihue,Los Muermos,10106,123,123,123,123
+Llanquihue,Llanquihue,10107,123,123,123,123
+Llanquihue,Maullín,10108,123,123,123,123
+Llanquihue,Puerto Varas,10109,123,123,123,123
+Chiloé,Castro,10201,123,123,123,123
+Chiloé,Ancud,10202,123,123,123,123
+Chiloé,Chonchi,10203,123,123,123,123
+Chiloé,Curaco de Velez,10204,123,123,123,123
+Chiloé,Dalcahue,10205,123,123,123,123
+Chiloé,Puqueldón,10206,123,123,123,123
+Chiloé,Queilén,10207,123,123,123,123
+Chiloé,Quellón,10208,123,123,123,123
+Chiloé,Quemchi,10209,123,123,123,123
+Chiloé,Quinchao,10210,123,123,123,123
+Osorno,Osorno,10301,123,123,123,123
+Osorno,Puerto Octay,10302,123,123,123,123
+Osorno,Purranque,10303,123,123,123,123
+Osorno,Puyehue,10304,123,123,123,123
+Osorno,Río Negro,10305,123,123,123,123
+Osorno,San Juan de la Costa,10306,123,123,123,123
+Osorno,San Pablo,10307,123,123,123,123
+Palena,Chaitén,10401,123,123,123,123
+Palena,Futaleufú,10402,123,123,123,123
+Palena,Hualaihue,10403,123,123,123,123
+Palena,Palena,10404,123,123,123,123
+Coihayque,Coihayque,11101,123,123,123,123
+Coihayque,Lago Verde,11102,123,123,123,123
+Aisén,Aisén,11201,123,123,123,123
+Aisén,Cisnes,11202,123,123,123,123
+Aisén,Guaitecas,11203,123,123,123,123
+Capitán Prat,Cochrane,11301,123,123,123,123
+Capitán Prat,O'Higgins,11302,123,123,123,123
+Capitán Prat,Tortel,11303,123,123,123,123
+General Carrera,Chile Chico,11401,123,123,123,123
+General Carrera,Río Ibáñez,11402,123,123,123,123
+Magallanes,Punta Arenas,12101,123,123,123,123
+Magallanes,Laguna Blanca,12102,123,123,123,123
+Magallanes,Río Verde,12103,123,123,123,123
+Magallanes,San Gregorio,12104,123,123,123,123
+Antártica Chilena,Cabo de Hornos,12201,123,123,123,123
+Antártica Chilena,Antártica,12202,123,123,123,123
+Tierra del Fuego,Porvenir,12301,123,123,123,123
+Tierra del Fuego,Primavera,12302,123,123,123,123
+Tierra del Fuego,Timaukel,12303,123,123,123,123
+Última Esperanza,Natales,12401,123,123,123,123
+Última Esperanza,Torres del Paine,12402,123,123,123,123
+Santiago,Santiago,13101,123,123,123,123
+Santiago,Cerrillos,13102,123,123,123,123
+Santiago,Cerro Navia,13103,123,123,123,123
+Santiago,Conchalí,13104,123,123,123,123
+Santiago,El Bosque,13105,123,123,123,123
+Santiago,Estación Central,13106,123,123,123,123
+Santiago,Huechuraba,13107,123,123,123,123
+Santiago,Independencia,13108,123,123,123,123
+Santiago,La Cisterna,13109,123,123,123,123
+Santiago,La Florida,13110,123,123,123,123
+Santiago,La Granja,13111,123,123,123,123
+Santiago,La Pintana,13112,123,123,123,123
+Santiago,La Reina,13113,123,123,123,123
+Santiago,Las Condes,13114,123,123,123,123
+Santiago,Lo Barnechea,13115,123,123,123,123
+Santiago,Lo Espejo,13116,123,123,123,123
+Santiago,Lo Prado,13117,123,123,123,123
+Santiago,Macul,13118,123,123,123,123
+Santiago,Maipú,13119,123,123,123,123
+Santiago,Ñuñoa,13120,123,123,123,123
+Santiago,Pedro Aguirre Cerda,13121,123,123,123,123
+Santiago,Peñalolén,13122,123,123,123,123
+Santiago,Providencia,13123,123,123,123,123
+Santiago,Pudahuel,13124,123,123,123,123
+Santiago,Quilicura,13125,123,123,123,123
+Santiago,Quinta Normal,13126,123,123,123,123
+Santiago,Recoleta,13127,123,123,123,123
+Santiago,Renca,13128,123,123,123,123
+Santiago,San Joaquín,13129,123,123,123,123
+Santiago,San Miguel,13130,123,123,123,123
+Santiago,San Ramón,13131,123,123,123,123
+Santiago,Vitacura,13132,123,123,123,123
+Cordillera,Puente Alto,13201,123,123,123,123
+Cordillera,Pirque,13202,123,123,123,123
+Cordillera,San José De Maipo,13203,123,123,123,123
+Chacabuco,Colina,13301,123,123,123,123
+Chacabuco,Lampa,13302,123,123,123,123
+Chacabuco,Tiltil,13303,123,123,123,123
+Maipo,San Bernardo,13401,123,123,123,123
+Maipo,Buin,13402,123,123,123,123
+Maipo,Calera De Tango,13403,123,123,123,123
+Maipo,Paine,13404,123,123,123,123
+Melipilla,Melipilla,13501,123,123,123,123
+Melipilla,Alhué,13502,123,123,123,123
+Melipilla,Curacaví,13503,123,123,123,123
+Melipilla,María Pinto,13504,123,123,123,123
+Melipilla,San Pedro,13505,123,123,123,123
+Talagante,Talagante,13601,123,123,123,123
+Talagante,El Monte,13602,123,123,123,123
+Talagante,Isla De Maipo,13603,123,123,123,123
+Talagante,Padre Hurtado,13604,123,123,123,123
+Talagante,Peñaflor,13605,123,123,123,123
+Valdivia,Valdivia,14101,123,123,123,123
+Valdivia,Corral,14102,123,123,123,123
+Valdivia,Lanco,14103,123,123,123,123
+Valdivia,Los Lagos,14104,123,123,123,123
+Valdivia,Máfil,14105,123,123,123,123
+Valdivia,Mariquina,14106,123,123,123,123
+Valdivia,Paillaco,14107,123,123,123,123
+Valdivia,Panguipulli,14108,123,123,123,123
+Ranco,La Unión,14201,123,123,123,123
+Ranco,Futrono,14202,123,123,123,123
+Ranco,Lago Ranco,14203,123,123,123,123
+Ranco,Río Bueno,14204,123,123,123,123
+Arica,Arica,15101,123,123,123,123
+Arica,Camarones,15102,123,123,123,123
+Parinacota,Putre,15201,123,123,123,123
+Parinacota,General Lagos,15202,123,123,123,123
