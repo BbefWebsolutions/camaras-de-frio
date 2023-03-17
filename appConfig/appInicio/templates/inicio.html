@@ -17,40 +17,28 @@
 <table class="table table-responsive table-bordered">
   <thead>
     <tr style="background-color: rgb(198, 198, 198); ">
-      <!-- <th scope="col"></th> -->
       <th scope="col">Nombre</th>
-      <th scope="col">Metro Cuadrado</th>
-      <th scope="col">Metro Cubico</th>
-      <th scope="col">Valor Neto</th>
-      <th scope="col">Valor IVA</th>
+      <th scope="col">M²</th>
+      <th scope="col">M³</th>
+      <th scope="col">Neto</th>
+      <th scope="col">+IVA</th>
       <th scope="col">Botones</th>
     </tr>
   </thead>
   <tbody>
     {% for camara in camaras %}
     <tr style="font-size: 1.2vw;">
-      <!-- <th scope="row">                    
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" name="hdps" class="custom-control-input" id="id-check-control"
-                value="{{camara.id}}">
-            <label class="custom-control-label" for="{{hdp.id}}"></label>
-        </div>
-      </th> -->
       <td>{{camara.nombre}}</td>
       <td>{{camara.m2}}</td>
       <td>{{camara.m3}}</td>
-      <td>{{camara.valorNeto}}</td>
-      <td>{{camara.valorIva}}</td>
+      <td><i class="fa-solid fa-dollar-sign"></i> {{camara.valorNeto}}</td>
+      <td><i class="fa-solid fa-dollar-sign"></i> {{camara.valorIva}}</td>
       <td id="{{camara.id}}" style="color: blue; text-decoration: underline blue; cursor: pointer;"
         onclick="abrirModalEnviarCorreo(this)" data-bs-toggle="modal" data-bs-target="#modalEnviarCorreo">Enviar </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-
-<!-- <div class="demo-container">
-    <div id="gridContainer"></div>
-</div> -->
 
 <!-- Modal -->
 <div class="modal fade" id="modalEnviarCorreo" tabindex="-1" aria-labelledby="modalEnviarCorreoLabel" aria-hidden="true">
@@ -143,7 +131,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-regular fa-circle-xmark"></i> Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btnFormEnviarCorreo"><i class="fa-solid fa-envelope"></i> Enviar Cotización</button>
+        <button class="btn btn-primary" id="btn_enviando_correo" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Enviando...
+        </button>
+        <button type="button" class="btn btn-primary" id="btn_enviar_correo"><i class="fa-solid fa-envelope"></i> Enviar Cotización</button>
       </div>
     </div>
   </div>
@@ -163,28 +155,28 @@
           <div class="form-group row">
             <label for="id-nombre-camara" class="col-sm-3 col-form-label">Nombre<span class="tx-danger">*</span></label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id='id-nombre-camara' name='nombre-camara'>
+                <input type="text" class="form-control" id='id-nombre-camara' name='nombre-camara' required>
             </div>
           </div>
           <br>
           <div class="form-group row">
             <label for="id-metro-cuadrado" class="col-sm-3 col-form-label">Metro cuadrado<span class="tx-danger">*</span></label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id='id-metro-cuadrado' name='metro-cuadrado'>
+                <input type="text" class="form-control" id='id-metro-cuadrado' name='metro-cuadrado' required>
             </div>
           </div>
           <br>
           <div class="form-group row">
             <label for="id-metro-cubico" class="col-sm-3 col-form-label">Metro cubico<span class="tx-danger">*</span></label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id='id-metro-cubico' name='metro-cubico'>
+                <input type="text" class="form-control" id='id-metro-cubico' name='metro-cubico' required>
             </div>
           </div>
           <br>
           <div class="form-group row">
             <label for="id-valor" class="col-sm-3 col-form-label">Valor Neto<span class="tx-danger">*</span></label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id='id-valor' name='valor'>
+                <input type="text" class="form-control" id='id-valor' name='valor' required>
             </div>
           </div>
           <br>
@@ -192,6 +184,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-regular fa-circle-xmark"></i> Cerrar</button>
+        <button class="btn btn-primary" id="btn_guardando_camara" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Cargando...
+        </button>
         <button type="button" class="btn btn-primary" id="btnFormGuardarCamara"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
       </div>
     </div>
@@ -201,6 +197,9 @@
 
 {% block partial_js_script %}
 <script>
+$("#btn_guardando_camara").hide()
+$("#btn_enviando_correo").hide()
+
 function mostrarFormularioCliente(){
     var checkBox = document.getElementById("id-check-datos-cliente");
     // If the checkbox is checked, display the output text
@@ -225,6 +224,10 @@ function mostrarFormularioCliente(){
     }
 }
 
+function separadorMiles(numero){
+  return numero.toLocaleString('en-US')
+}
+
 
   function abrirModalEnviarCorreo(value) {
     $("#numero-camara").val(value.id)
@@ -234,56 +237,15 @@ function mostrarFormularioCliente(){
     $('#modalAgregarCamara').modal('show');
   }
 
-  $(() => {
-    $('#gridContainer').dxDataGrid({
-      dataSource: "{% url 'json-listar-camaras' %}",
-      selection: {
-        mode: 'multiple',
-      },
-      columns: [{
-        caption: 'Nombre',
-        dataField: 'nombre',
-        width: 400,
-      }, {
-        dataField: 'm2',
-        caption: 'Metro Cuadrado',
-      }, {
-        dataField: 'm3',
-        caption: 'Metro Cubico',
-      }, {
-        dataField: 'neto',
-        caption: 'Valor Neto',
-      }, {
-        dataField: 'iva',
-        caption: 'Valor IVA',
-      }, {
-        type: "buttons",
-        caption: "Botones",
-        alignment: "center",
-        allowHiding: false,
-        showInColumnChooser: false,
-        buttons: [{
-          hint: "Enviar Cotización",
-          icon: "export",
-          onClick: function (e) {
-            $("#modalEnviarCorreo").show()
-          }
-        },]
-      }
-      ],
-      showBorders: true,
-    });
-  });
 
-$('#btnFormEnviarCorreo').click(function () {
+$('#btn_enviar_correo').click(function () {
   const formulario = $('#formEnviarCorreoCliente')
   if (formulario.parsley().validate()) {
-    abrirCargando();
+    $("#btn_enviar_correo").hide()
+    $("#btn_enviando_correo").show()
     setTimeout(function(){
       const divDataGrid = $(this).attr('data-id-grid')
       $.post(formulario.attr('action'), formulario.serialize(), function (response) {
-        cerrarCargando();
-        $('#modalEnviarCorreo').modal('hide');
         if(!response.respuesta == 0){
           notify = new PNotify({
                 title: 'Acción exitosa',
@@ -301,7 +263,10 @@ $('#btnFormEnviarCorreo').click(function () {
               delay: 3000
           });
         }
-      })
+      }),
+      $('#modalEnviarCorreo').modal('hide');
+      $("#btn_enviar_correo").show()
+      $("#btn_enviando_correo").hide()
     }, 2000);
   }
 });
@@ -309,7 +274,8 @@ $('#btnFormEnviarCorreo').click(function () {
 $('#btnFormGuardarCamara').click(function () {
   const formulario = $('#formEnviarGuardarCamara')
   if (formulario.parsley().validate()) {
-    abrirCargando();
+    $("#btnFormGuardarCamara").hide()
+    $("#btn_guardando_camara").show()
     const divDataGrid = $(this).attr('data-id-grid')
     $.post(formulario.attr('action'), formulario.serialize(), function (response) {
         if (response.accionEjecutada) {
