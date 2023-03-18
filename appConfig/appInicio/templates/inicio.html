@@ -150,7 +150,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="formEnviarGuardarCamara" method="POST" action="{% url 'guardar-camara-frio' %}" data-parsley-validate>
+        <form id="formEnviarGuardarCamara" enctype="multipart/form-data" data-parsley-validate >
           {% csrf_token%}
           <div class="form-group row">
             <label for="id-nombre-camara" class="col-sm-3 col-form-label">Nombre<span class="tx-danger">*</span></label>
@@ -180,6 +180,13 @@
             </div>
           </div>
           <br>
+          <div class="form-group row">
+            <label for="imagen_guia" class="col-sm-3 col-form-label">Guía<span class="tx-danger">*</span></label>
+            <div class="col-sm-9">
+              <input class="form-control form-control-md" id="imagen_guia" name="imagen_guia" type="file">
+            </div>
+          </div>
+          <br>
         </form>
       </div>
       <div class="modal-footer">
@@ -188,7 +195,7 @@
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Cargando...
         </button>
-        <button type="button" class="btn btn-primary" id="btnFormGuardarCamara"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
+        <button type="button" class="btn btn-primary" id="btnFormGuardarCamara" onclick="guardaCamaraDeFrio()"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
       </div>
     </div>
   </div>
@@ -271,35 +278,85 @@ $('#btn_enviar_correo').click(function () {
   }
 });
 
-$('#btnFormGuardarCamara').click(function () {
-  const formulario = $('#formEnviarGuardarCamara')
+function guardaCamaraDeFrio(){
+  const formulario = $('#formEnviarGuardarCamara'); 
   if (formulario.parsley().validate()) {
-    $("#btnFormGuardarCamara").hide()
-    $("#btn_guardando_camara").show()
-    const divDataGrid = $(this).attr('data-id-grid')
-    $.post(formulario.attr('action'), formulario.serialize(), function (response) {
-        if (response.accionEjecutada) {
+    $("#btn_guardar_correo").hide()
+    $("#btn_guardando_correo").show()
+    let formData = new FormData();
+    formData.append('csrfmiddlewaretoken', formulario.find('input[name = csrfmiddlewaretoken]').val());
+    formData.append('nombre', formulario.find('input[name = nombre-camara]').val());
+    formData.append('m2', formulario.find('input[name = metro-cuadrado]').val());
+    formData.append('m3', formulario.find('input[name = metro-cubico]').val());
+    formData.append('neto', formulario.find('input[name = valor]').val());
+    formData.append('guia', formulario.find('input[name = imagen_guia]')[0].files[0]);
+
+    $.ajax({
+    url: "{% url 'guardar-camara-frio' %}",
+    type: 'POST',
+    data: formData,
+    dataType: "json",
+    success: function (data) {
+        if (data.respuesta==true) {
+            formulario.parsley().reset()
             notify = new PNotify({
-                title: 'Acción exitosa',
-                text: 'Correo enviado correctamente!',
+                title: 'Acción Exitosa!',
+                text: 'Se ha guardado la camara correctamente',
                 type: 'success',
                 styling: 'bootstrap3',
                 delay: 3000
-            });
+            });    
+        }else{
+          notify = new PNotify({
+              title: 'Error!',
+              text: 'ha ocurrido un error!',
+              type: 'error',
+              styling: 'bootstrap3',
+              delay: 3000
+          });  
         }
-        else {
-            notify = new PNotify({
-                title: 'Acción no ejecutada',
-                text: 'No se ha podido realizar la acción',
-                type: 'error',
-                styling: 'bootstrap3',
-                delay: 3000
-            });
-        }
-        setTimeout(function(){location.reload();}, 3000);
-    })
-  }
-});
+      $('#modalAgregarCamara').modal('hide');
+      $("#btn_guardar_correo").show()
+      $("#btn_guardando_correo").hide()
+    },
+    // Tell jQuery not to process data or worry about content-type
+    // You must include these options!
+    cache: false,
+    contentType: false,
+    processData: false,
+})
+}
+}
+
+// $('#btnFormGuardarCamara').click(function () {
+//   const formulario = $('#formEnviarGuardarCamara')
+//   if (formulario.parsley().validate()) {
+//     $("#btnFormGuardarCamara").hide()
+//     $("#btn_guardando_camara").show()
+//     const divDataGrid = $(this).attr('data-id-grid')
+//     $.post(formulario.attr('action'), formulario.serialize(), function (response) {
+//       if (response.accionEjecutada) {
+//             notify = new PNotify({
+//                 title: 'Acción exitosa',
+//                 text: 'Correo enviado correctamente!',
+//                 type: 'success',
+//                 styling: 'bootstrap3',
+//                 delay: 3000
+//             });
+//         }
+//         else {
+//             notify = new PNotify({
+//                 title: 'Acción no ejecutada',
+//                 text: 'No se ha podido realizar la acción',
+//                 type: 'error',
+//                 styling: 'bootstrap3',
+//                 delay: 3000
+//             });
+//         }
+//         // setTimeout(function(){location.reload();}, 3000);
+//     })
+//   }
+// });
 
 function buscarComunas(value) {
   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
