@@ -10,7 +10,7 @@ class Camara(models.Model):
     uf = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank = True, default = None, verbose_name = 'UF')
     valorNeto = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank = True, default = None, verbose_name = 'Valor Neto')
     valorIva = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank = True, default = None, verbose_name = 'Valor IVA')
-    guia = models.FileField(upload_to ='guias/camaras/', null = True, blank = True, default = None)
+    ficha = models.FileField(upload_to ='guias/camaras/', null = True, blank = True, default = None, verbose_name = 'Ficha')
     ### Datos de Log ###
     registroActivo = models.BooleanField( default = True, verbose_name = 'Registro Activo' )
     registroFechaCreacion = models.DateTimeField( null=False, blank=False, auto_now_add=True, verbose_name = 'Fecha de Creación')

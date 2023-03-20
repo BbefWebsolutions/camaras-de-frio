@@ -9,8 +9,8 @@
 </div>
 
 <div class="d-grid gap-2 d-flex justify-content-end">
-    <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-down"></i></button>
-    <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-up"></i></button>
+    <!-- <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-down"></i></button>
+    <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-up"></i></button> -->
     <button type="button" class="btn btn-default" onclick="abrirModalAgregarCamara()"><i class="fa-regular fa-plus"></i></button>
 </div>
 
@@ -195,7 +195,7 @@
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Cargando...
         </button>
-        <button type="button" class="btn btn-primary" id="btnFormGuardarCamara" onclick="guardaCamaraDeFrio()"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
+        <button type="button" class="btn btn-primary" id="btn_guardar_camara" onclick="guardaCamaraDeFrio()"><i class="fa-solid fa-floppy-disk"></i> Guardar Camara</button>
       </div>
     </div>
   </div>
@@ -250,39 +250,36 @@ $('#btn_enviar_correo').click(function () {
   if (formulario.parsley().validate()) {
     $("#btn_enviar_correo").hide()
     $("#btn_enviando_correo").show()
-    setTimeout(function(){
-      const divDataGrid = $(this).attr('data-id-grid')
-      $.post(formulario.attr('action'), formulario.serialize(), function (response) {
-        if(!response.respuesta == 0){
-          notify = new PNotify({
-                title: 'Acción exitosa',
-                text: 'Correo enviado correctamente',
-                type: 'success',
-                styling: 'bootstrap3',
-                delay: 3000
-            });
-        }else{
-          notify = new PNotify({
-              title: 'Acción no se ha ejecutado',
-              text: 'No se ha podido realizar la acción',
-              type: 'error',
-              styling: 'bootstrap3',
-              delay: 3000
-          });
-        }
-      }),
-      $('#modalEnviarCorreo').modal('hide');
+    $.post(formulario.attr('action'), formulario.serialize(), function (response) {
       $("#btn_enviar_correo").show()
       $("#btn_enviando_correo").hide()
-    }, 2000);
+      $('#modalEnviarCorreo').modal('hide');
+      if(!response.respuesta == 0 && response.enviado == true){
+        notify = new PNotify({
+            title: 'Acción exitosa',
+            text: 'Correo enviado correctamente',
+            type: 'success',
+            styling: 'bootstrap3',
+            delay: 3000
+        });
+      }else{
+        notify = new PNotify({
+            title: 'Acción no se ha ejecutado',
+            text: 'No se ha podido realizar la acción',
+            type: 'error',
+            styling: 'bootstrap3',
+            delay: 3000
+        });
+      }
+    })
   }
 });
 
 function guardaCamaraDeFrio(){
   const formulario = $('#formEnviarGuardarCamara'); 
   if (formulario.parsley().validate()) {
-    $("#btn_guardar_correo").hide()
-    $("#btn_guardando_correo").show()
+    $("#btn_guardar_camara").hide()
+    $("#btn_guardando_camara").show()
     let formData = new FormData();
     formData.append('csrfmiddlewaretoken', formulario.find('input[name = csrfmiddlewaretoken]').val());
     formData.append('nombre', formulario.find('input[name = nombre-camara]').val());
@@ -297,6 +294,7 @@ function guardaCamaraDeFrio(){
     data: formData,
     dataType: "json",
     success: function (data) {
+      setTimeout(function(){
         if (data.respuesta==true) {
             formulario.parsley().reset()
             notify = new PNotify({
@@ -315,9 +313,11 @@ function guardaCamaraDeFrio(){
               delay: 3000
           });  
         }
-      $('#modalAgregarCamara').modal('hide');
-      $("#btn_guardar_correo").show()
-      $("#btn_guardando_correo").hide()
+      
+        $('#modalAgregarCamara').modal('hide');
+        $("#btn_guardar_correo").show()
+        $("#btn_guardando_correo").hide()
+      }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
     // You must include these options!
@@ -328,10 +328,10 @@ function guardaCamaraDeFrio(){
 }
 }
 
-// $('#btnFormGuardarCamara').click(function () {
+// $('#btn_guardar_camara').click(function () {
 //   const formulario = $('#formEnviarGuardarCamara')
 //   if (formulario.parsley().validate()) {
-//     $("#btnFormGuardarCamara").hide()
+//     $("#btn_guardar_camara").hide()
 //     $("#btn_guardando_camara").show()
 //     const divDataGrid = $(this).attr('data-id-grid')
 //     $.post(formulario.attr('action'), formulario.serialize(), function (response) {
