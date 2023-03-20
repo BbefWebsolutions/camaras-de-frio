@@ -9,12 +9,6 @@ from django.utils.html import strip_tags
 from django.core.mail import send_mail
 from decouple import config
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
-
 ## NEW
 from email.message import EmailMessage
 import smtplib
@@ -22,6 +16,8 @@ import smtplib
 # APP's
 from appCamara.models import Camara
 from appInicio.models import Region, Provincia, Comuna
+from appDocumento.documentos.crear_cotizacion import crearCotizacion
+from appDocumento.correos.envio_correo_cotizacion import enviarCorreoCotizacion
 from appCliente.models import Cliente
 
 
@@ -78,13 +74,9 @@ def enviarCorreoCliente(request):
     _nombre_cliente = ''
     if request.method == 'POST':
         _correo = request.POST.get('correo-cliente')
-        print(request.POST.get('numero-camara'))
         _camara = Camara.objects.get(id=int(request.POST.get('numero-camara')))
-        print(_camara)
-        _camara = []
         _checkbox = request.POST.get('check-datos-cliente')
         if _checkbox is None: # Cuando solo se debe enviar correo sin datos de cliente
-            print('envio de correo prueba')
             _enviado = enviarCorreoCotizacion(_correo, _camara)
             _respuesta = 1
         else:
@@ -122,84 +114,11 @@ def guardarCamaraFrio(request):
         _m3 = request.POST.get('m3')
         _valor = Decimal(request.POST.get('neto'))
         _iva = Decimal(_valor*Decimal(1.19))
-        _guia = request.FILES["guia"]
+        _ficha = request.FILES["guia"]
         try:
-            _camara = Camara.objects.create(nombre=_nombre, m2=_m2, m3=_m3, valorNeto=_valor, valorIva=_iva, guia=_guia)
+            _camara = Camara.objects.create(nombre=_nombre, m2=_m2, m3=_m3, valorNeto=_valor, valorIva=_iva, ficha=_ficha)
             _respuesta = True
         except:
             _respuesta = False
     json = { 'respuesta': _respuesta }
     return JsonResponse(json, safe=False)
-
-def enviarCorreoCotizacion(_correo, _camara, _cliente=None):
-    _respuesta = False
-    try:
-        # Iniciamos los parámetros del script
-        remitente = config('EMAIL_HOST_USER')
-        destinatarios = ['esalazar.in@gmail.com']
-        password = config('EMAIL_HOST_PASSWORD')
-        asunto = 'Cotización de Camara de Frio'
-
-        # Armar correo con html
-        _context = {
-            'camara': _camara,
-            'correo': _correo,
-            'cliente': _cliente,
-        }
-        cuerpo = render_to_string('email/email_cotizacion.html', context = _context)
-
-        # Buscar archivo correspondiente a la camara seleccionada
-        ruta_adjunto = (r'media/'+_camara.guia)
-        nombre_adjunto = str(_camara.guia)
-
-        # Creamos el objeto mensaje
-        mensaje = MIMEMultipart()
-        
-        # Establecemos los atributos del mensaje
-        mensaje['From'] = remitente
-        mensaje['To'] = ", ".join(destinatarios)
-        mensaje['Subject'] = asunto
-        
-        # Agregamos el cuerpo del mensaje como objeto MIME de tipo texto
-        mensaje.attach(MIMEText(cuerpo, 'plain'))
-        
-        # Abrimos el archivo que vamos a adjuntar
-        archivo_adjunto = open(ruta_adjunto, 'rb')
-        
-        # Creamos un objeto MIME base
-        adjunto_MIME = MIMEBase('application', 'octet-stream')
-
-        # Y le cargamos el archivo adjunto
-        adjunto_MIME.set_payload((archivo_adjunto).read())
-
-        # Codificamos el objeto en BASE64
-        encoders.encode_base64(adjunto_MIME)
-
-        # Agregamos una cabecera al objeto
-        adjunto_MIME.add_header('Content-Disposition', "attachment; filename= %s" % nombre_adjunto)
-
-        # Y finalmente lo agregamos al mensaje
-        mensaje.attach(adjunto_MIME)
-        
-        # Creamos la conexión con el servidor
-        sesion_smtp = smtplib.SMTP(config('EMAIL_HOST'), config('EMAIL_PORT', cast=int))
-        
-        # Ciframos la conexión
-        sesion_smtp.starttls()
-
-        # Iniciamos sesión en el servidor
-        sesion_smtp.login(str(remitente),str(password))
-
-        # Convertimos el objeto mensaje a texto
-        texto = mensaje.as_string()
-
-        # Enviamos el mensaje
-        sesion_smtp.sendmail(remitente, destinatarios, texto)
-
-        # Cerramos la conexión
-        sesion_smtp.quit()
-        _respuesta = True
-    except:
-        print('No se ha enviado el correo')
-    return _respuesta
-
