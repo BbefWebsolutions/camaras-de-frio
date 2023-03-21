@@ -7,6 +7,7 @@ class Region( models.Model ):
     #https://en.wikipedia.org/wiki/ISO_3166-2:CL
     codigo_iso = models.CharField( max_length = 5, verbose_name = 'Código ISO 3166-2' )
     nombre = models.CharField( max_length = 100, verbose_name = 'Nombre de Región')
+    km = models.IntegerField(null=True, blank=True, default=None, verbose_name='Kilometro')
     ### Datos de Log ###
     registroActivo = models.BooleanField( default = True, verbose_name = 'Registro Activo' )
     registroFechaCreacion = models.DateTimeField( null=False, blank=False, auto_now_add=True, verbose_name = 'Fecha de Creación')
