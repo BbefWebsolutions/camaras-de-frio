@@ -19,6 +19,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     _comuna_cliente = cliente.comuna.nombre.upper() if cliente else ''
     _ciudad_cliente = cliente.region.nombre.upper() if cliente else ''
     _fecha_emision = datetime.now().date().strftime("%d/%m/%Y")
+    _total_neto = 0
 
     w, h = letter
     c = canvas.Canvas(r"media/cotizaciones/Cotizacion_camara.pdf", pagesize=letter)
@@ -257,6 +258,53 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     c.setFont('Vera', 8)
     c.drawString(23, h-660, 'Observación: ')
 
+    # DATO DE CAMARA
+    # descrpción de la camara
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawString(103, h-295, str(camara.nombre))
+
+    # cantidad de la camara
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(345, h-295, '1')
+
+    # precio unitario de la camara
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(425, h-295, str('$ '+'{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
+
+    # precio valor de la camara
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(580, h-295, str('$ '+'{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
+
+    _total_neto += camara.valorNeto
+
+    if cliente and cliente.region.codigo_iso != 'CL-RM':
+        _valor_intalacion = Decimal(cliente.region.km * 2500)
+        _total_neto += _valor_intalacion
+        # DATO DE INTALACIOÓN
+        # descrpción de la camara
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawString(103, h-305, 'Costo por transporte a región')
+
+        # cantidad de la camara
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(345, h-305, '1')
+
+        # precio unitario de la camara
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(425, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+
+        # precio valor de la camara
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(580, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+
     # RECTANGULO DE TOTALES
     c.setLineWidth(0.1)
     c.setStrokeColor('black')
@@ -290,7 +338,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO NETO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-686, '$ '+str('{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
+    c.drawRightString(584, h-686, '$ '+str('{:,.0f}'.format(_total_neto)).replace(',', '.'))
     # c.drawString(570, h-686, '$ 0')
 
     # IVA DE CUADRO TOTALES
@@ -301,7 +349,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO IVA DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    _valorIva = Decimal(camara.valorIva - camara.valorNeto)
+    _valorIva = Decimal(_total_neto * Decimal(0.19))
     c.drawRightString(584, h-698, '$ '+str('{:,.0f}'.format(_valorIva)).replace(',', '.'))
     # c.drawString(570, h-698, '$ 0')
 
@@ -313,29 +361,8 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO TOTAL DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(camara.valorIva)).replace(',', '.'))
+    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total_neto)).replace(',', '.'))
     # c.drawString(570, h-710, '$ 0')
-
-    # DATO DE CAMARA
-    # descrpción de la camara
-    c.setFillColor('black')
-    c.setFont('Vera', 6)
-    c.drawString(103, h-295, str(camara.nombre))
-
-    # cantidad de la camara
-    c.setFillColor('black')
-    c.setFont('Vera', 6)
-    c.drawString(343, h-295, '1')
-
-    # precio unitario de la camara
-    c.setFillColor('black')
-    c.setFont('Vera', 6)
-    c.drawString(395, h-295, str('{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
-
-    # precio valor de la camara
-    c.setFillColor('black')
-    c.setFont('Vera', 6)
-    c.drawString(550, h-295, str('{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
 
     # LOGO KUKA
     c.drawImage("static/assets/img/cotizacion/logo_kuka.png", 20, h-778, width=70, height=15)

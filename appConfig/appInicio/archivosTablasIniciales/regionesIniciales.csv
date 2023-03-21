@@ -1,17 +1,17 @@
-codigo_iso,nombre
-CL-AI,Aysén del General Carlos Ibáñez del Campo
-CL-AN,Antofagasta
-CL-AP,Arica y Parinacota
-CL-AR,Araucanía
-CL-AT,Atacama
-CL-BI,Biobío
-CL-CO,Coquimbo
-CL-LI,Libertador General Bernardo O'Higgins
-CL-LL,Los Lagos
-CL-LR,Los Ríos
-CL-MA,Magallanes y la Antártica Chilena
-CL-ML,Maule
-CL-NB,Ñuble
-CL-RM,Metropolitana de Santiago
-CL-TA,Tarapacá
-CL-VS,Valparaíso
+codigo_iso,nombre,km
+CL-AI,Aysén del General Carlos Ibáñez del Campo,1443
+CL-AN,Antofagasta,1342
+CL-AP,Arica y Parinacota,2029
+CL-AR,Araucanía,638
+CL-AT,Atacama,801
+CL-BI,Biobío,507
+CL-CO,Coquimbo,376
+CL-LI,Libertador General Bernardo O'Higgins,110
+CL-LL,Los Lagos,1086
+CL-LR,Los Ríos,831
+CL-MA,Magallanes y la Antártica Chilena,2225
+CL-ML,Maule,267
+CL-NB,Ñuble,402
+CL-RM,Metropolitana de Santiago,0
+CL-TA,Tarapacá,1805
+CL-VS,Valparaíso,128

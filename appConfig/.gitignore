@@ -3,3 +3,5 @@
 
 # Se ignora la dasedatos por default
 /db/*.sqlite3
+
+*.pyc
