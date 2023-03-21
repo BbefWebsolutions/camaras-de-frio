@@ -19,10 +19,11 @@ from appInicio.models import Region, Provincia, Comuna
 from appDocumento.documentos.crear_cotizacion import crearCotizacion
 from appDocumento.correos.envio_correo_cotizacion import enviarCorreoCotizacion
 from appCliente.models import Cliente
+from appUsuario.user_decorator import validarPermisosEcosapp
 
 
 # Create your views here.
-
+@validarPermisosEcosapp()
 def inicio(request):
     _data = []
     _camaras = Camara.objects.filter(registroActivo=True)

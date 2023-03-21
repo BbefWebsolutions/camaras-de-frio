@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'appCamara',
     'appCliente',
     'appDocumento',
+    'appUsuario',
 ]
 
 MIDDLEWARE = [
