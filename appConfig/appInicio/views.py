@@ -29,11 +29,14 @@ def inicio(request):
     _camaras = Camara.objects.filter(registroActivo=True)
     _regiones = Region.objects.filter(registroActivo=True)
     _comunas = Comuna.objects.filter(registroActivo=True)
+    _correlativo = 0
     for _camara in _camaras:
+        _correlativo += 1
         _neto = ('{:,.0f}'.format(_camara.valorNeto)).replace(',', '.')
         _iva = ('{:,.0f}'.format(_camara.valorIva)).replace(',', '.')
         _item = {
             'id': _camara.id,
+            'correlativo': _correlativo,
             'nombre': _camara.nombre,
             'm2': str(_camara.m2).replace('.', ','),
             'm3': str(_camara.m3).replace('.', ','),

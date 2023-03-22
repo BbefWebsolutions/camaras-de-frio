@@ -17,6 +17,7 @@
 <table class="table table-responsive table-bordered">
   <thead>
     <tr style="background-color: rgb(198, 198, 198); ">
+      <th scope="col">N°</th>
       <th scope="col">Nombre</th>
       <th scope="col">M²</th>
       <th scope="col">M³</th>
@@ -28,6 +29,7 @@
   <tbody>
     {% for camara in camaras %}
     <tr style="font-size: 1.2vw;">
+      <td>{{camara.correlativo}}</td>
       <td>{{camara.nombre}}</td>
       <td>{{camara.m2}}</td>
       <td>{{camara.m3}}</td>
@@ -295,6 +297,10 @@ function guardaCamaraDeFrio(){
     dataType: "json",
     success: function (data) {
       setTimeout(function(){
+        $("#btn_guardar_camara").show()
+        $("#btn_guardando_camara").hide()
+        $('#modalAgregarCamara').modal('hide');
+        document.getElementById("formEnviarGuardarCamara").reset();
         if (data.respuesta==true) {
             formulario.parsley().reset()
             notify = new PNotify({
@@ -313,10 +319,7 @@ function guardaCamaraDeFrio(){
               delay: 3000
           });  
         }
-      
-        $('#modalAgregarCamara').modal('hide');
-        $("#btn_guardar_correo").show()
-        $("#btn_guardando_correo").hide()
+        // location.reload()
       }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
