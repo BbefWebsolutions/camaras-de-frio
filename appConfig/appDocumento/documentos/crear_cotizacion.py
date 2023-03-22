@@ -280,30 +280,52 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     c.drawRightString(580, h-295, str('$ '+'{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
 
     _total_neto += camara.valorNeto
+    _valor_intalacion = Decimal(camara.valorNeto * Decimal(0.15))
+    # descrpción de la intalación
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawString(103, h-305, 'Intalación')
+
+    # cantidad de la intalación
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(345, h-305, '1')
+
+    # precio unitario de la intalación
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(425, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+
+    # precio valor de la intalación
+    c.setFillColor('black')
+    c.setFont('Vera', 6)
+    c.drawRightString(580, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+
+    _total_neto += _valor_intalacion
 
     if cliente and cliente.region.codigo_iso != 'CL-RM':
-        _valor_intalacion = Decimal(cliente.region.km * 2500)
-        _total_neto += _valor_intalacion
+        _valor_km = Decimal(cliente.region.km * 2000)
+        _total_neto += _valor_km
         # DATO DE INTALACIOÓN
         # descrpción de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawString(103, h-305, 'Costo por transporte a región')
+        c.drawString(103, h-315, 'Transporte y estadía')
 
         # cantidad de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(345, h-305, '1')
+        c.drawRightString(345, h-315, '1')
 
         # precio unitario de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(425, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+        c.drawRightString(425, h-315, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
 
         # precio valor de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(580, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
+        c.drawRightString(580, h-315, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
 
     # RECTANGULO DE TOTALES
     c.setLineWidth(0.1)
@@ -361,7 +383,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO TOTAL DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total_neto)).replace(',', '.'))
+    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total_neto + _valorIva)).replace(',', '.'))
     # c.drawString(570, h-710, '$ 0')
 
     # LOGO KUKA

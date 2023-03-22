@@ -21,3 +21,4 @@ def jsonListarComunas(request, id):
         'data': _data
     }
     return JsonResponse(_context, safe=False)
+

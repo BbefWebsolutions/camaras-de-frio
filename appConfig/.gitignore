@@ -5,5 +5,8 @@
 /db/*.sqlite3
 
 *.pyc
+*.cpython-311.pyc
 
 *.pdf
+
+__pycache__/
