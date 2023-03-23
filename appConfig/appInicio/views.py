@@ -76,12 +76,23 @@ def enviarCorreoCliente(request):
     _enviado = None
     _respuesta = 0
     _nombre_cliente = ''
+    _observacion = ''
+    _descuento = 0
     if request.method == 'POST':
         _correo = request.POST.get('correo-cliente')
         _camara = Camara.objects.get(id=int(request.POST.get('numero-camara')))
         _checkbox = request.POST.get('check-datos-cliente')
+        _check_observacion = request.POST.get('check-datos-observacion')
+        _check_descuento = request.POST.get('check-datos-descuento')
+
+        if _check_observacion == 'on':
+            _observacion = request.POST.get('observacion')
+
+        if _check_descuento == 'on':
+            _descuento = request.POST.get('descuento')
+
         if _checkbox is None: # Cuando solo se debe enviar correo sin datos de cliente
-            _enviado = enviarCorreoCotizacion(_correo, _camara)
+            _enviado = enviarCorreoCotizacion(_correo, _camara, _observacion, _descuento)
             _respuesta = 1
         else:
             _nombre = request.POST.get('nombre')
@@ -106,7 +117,7 @@ def enviarCorreoCliente(request):
                 _cliente = Cliente.objects.create(nombre=_nombre, rut=_rut, giro=_giro, region=_region, comuna=_comuna, direccion=_direccion, telefono=_telefono, correo=_correo)
                 _respuesta = 3  
             _nombre_cliente = _cliente.nombre
-            _enviado = enviarCorreoCotizacion(_correo, _camara, _cliente)
+            _enviado = enviarCorreoCotizacion(_correo, _camara, _observacion, _descuento, _cliente)
     json = { 'respuesta': _respuesta, 'cliente': _nombre_cliente, 'enviado': _enviado }
     return JsonResponse(json, safe=False)
 

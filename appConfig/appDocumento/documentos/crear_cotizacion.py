@@ -11,7 +11,7 @@ pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
 pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
 
-def crearCotizacion(camara=None, correo=None, cliente=None):
+def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, cliente=None):
     _nombre_cliente = cliente.nombre.upper() if cliente else ''
     _rut_cliente = cliente.rut if cliente else ''
     _giro_cliente = cliente.giro.upper() if cliente else ''
@@ -20,6 +20,29 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     _ciudad_cliente = cliente.region.nombre.upper() if cliente else ''
     _fecha_emision = datetime.now().date().strftime("%d/%m/%Y")
     _total_neto = 0
+    _valor_descuento = 0
+
+    # VALOR INICIAL
+    _total_neto += camara.valorNeto
+    _valor_intalacion = Decimal(camara.valorNeto * Decimal(0.15))
+    _total_neto += _valor_intalacion
+
+    # CALCULAR VALOR POR KM
+    if cliente and cliente.region.codigo_iso != 'CL-RM':
+        _valor_km = Decimal(cliente.region.km * 2000)
+        _total_neto += _valor_km
+
+    # REALIZAR EL DESCUENTO AL VALOR NETO
+    if Decimal(descuento)>0:
+        _valor_descuento = _total_neto * (Decimal(descuento)/100)
+        _total_neto = _total_neto - _valor_descuento
+
+    # CALCULAR VALOR IVA
+    _valorIva = Decimal(_total_neto * Decimal(0.19))
+
+    # TOTAL DE LA COTIZACIÓN
+    _total = _total_neto + _valorIva
+    
 
     w, h = letter
     c = canvas.Canvas(r"media/cotizaciones/Cotizacion_camara.pdf", pagesize=letter)
@@ -258,6 +281,11 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     c.setFont('Vera', 8)
     c.drawString(23, h-660, 'Observación: ')
 
+    # OBSERVACIÓN
+    c.setFillColor('black')
+    c.setFont('Vera', 8)
+    c.drawString(23, h-670, str(observacion))
+
     # DATO DE CAMARA
     # descrpción de la camara
     c.setFillColor('black')
@@ -279,8 +307,6 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     c.setFont('Vera', 6)
     c.drawRightString(580, h-295, str('$ '+'{:,.0f}'.format(camara.valorNeto)).replace(',', '.'))
 
-    _total_neto += camara.valorNeto
-    _valor_intalacion = Decimal(camara.valorNeto * Decimal(0.15))
     # descrpción de la intalación
     c.setFillColor('black')
     c.setFont('Vera', 6)
@@ -301,31 +327,52 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     c.setFont('Vera', 6)
     c.drawRightString(580, h-305, str('$ '+'{:,.0f}'.format(_valor_intalacion)).replace(',', '.'))
 
-    _total_neto += _valor_intalacion
-
+    _height = 305
     if cliente and cliente.region.codigo_iso != 'CL-RM':
-        _valor_km = Decimal(cliente.region.km * 2000)
-        _total_neto += _valor_km
+        _height += 10
         # DATO DE INTALACIOÓN
         # descrpción de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawString(103, h-315, 'Transporte y estadía')
+        c.drawString(103, h-+_height, 'Transporte y estadía')
 
         # cantidad de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(345, h-315, '1')
+        c.drawRightString(345, h-+_height, '1')
 
         # precio unitario de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(425, h-315, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
+        c.drawRightString(425, h-+_height, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
 
         # precio valor de la camara
         c.setFillColor('black')
         c.setFont('Vera', 6)
-        c.drawRightString(580, h-315, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
+        c.drawRightString(580, h-+_height, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
+
+    if Decimal(descuento)>0:
+        _height += 10
+        # DATO DE DESCUENTO
+        # descrpción de la descuento
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawString(103, h-+_height, 'Descuento autorizado : '+descuento+'%')
+
+        # cantidad de la descuento
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(345, h-+_height, '1')
+
+        # precio unitario de la descuento
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(425, h-+_height, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
+
+        # precio valor de la descuento
+        c.setFillColor('black')
+        c.setFont('Vera', 6)
+        c.drawRightString(580, h-+_height, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
 
     # RECTANGULO DE TOTALES
     c.setLineWidth(0.1)
@@ -340,7 +387,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO DESCUENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-662, '$ 0')
+    c.drawRightString(584, h-662, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
 
     # EXENTO DE CUADRO TOTALES
     c.setFillColor('black')
@@ -371,7 +418,6 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO IVA DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    _valorIva = Decimal(_total_neto * Decimal(0.19))
     c.drawRightString(584, h-698, '$ '+str('{:,.0f}'.format(_valorIva)).replace(',', '.'))
     # c.drawString(570, h-698, '$ 0')
 
@@ -383,7 +429,7 @@ def crearCotizacion(camara=None, correo=None, cliente=None):
     # DATO TOTAL DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total_neto + _valorIva)).replace(',', '.'))
+    c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total)).replace(',', '.'))
     # c.drawString(570, h-710, '$ 0')
 
     # LOGO KUKA
