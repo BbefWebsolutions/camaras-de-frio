@@ -54,18 +54,34 @@
         <form id="formEnviarCorreoCliente" method="POST" action="{% url 'envio-correo-cliente' %}" data-parsley-validate>
           {% csrf_token%}
           <input type="hidden" id="numero-camara" name="numero-camara">
-          <div style="padding-left: 7px;" class="form-group row">
+          
+          <!-- <div style="padding-left: 7px;" class="form-group row">
             <div class="form-check">
-              <div class="col-sm-8">
+              <div class="col-sm-4">
                 <input class="form-check-input" type="checkbox" value="" id="id-check-datos-cliente" name="check-datos-cliente" onchange="mostrarFormularioCliente()">
               </div>
               <label class="form-check-label" for="id-check-datos-cliente">
                 Datos de Cliente
               </label>
             </div>
+          </div> -->
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="id-check-datos-cliente" name="check-datos-cliente" onchange="mostrarFormularioCliente()">
+            <label class="form-check-label" for="id-check-datos-cliente">Cliente</label>
           </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="id-check-datos-observacion" name="check-datos-observacion" onchange="mostrarFormularioObservacion()">
+            <label class="form-check-label" for="id-check-datos-observacion">Observación</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="id-check-datos-descuento" name="check-datos-descuento" onchange="mostrarFormularioDescuento()">
+            <label class="form-check-label" for="id-check-datos-descuento">Descuento</label>
+          </div>
+          <br>
 
           <div class="container-formulario-cliente" id="id-container-formulario-cliente" hidden>
+            <br>
             <div class="form-group row">
               <label for="id-nombre" class="col-sm-3 col-form-label">Nombre<span class="tx-danger">*</span></label>
               <div class="col-sm-9">
@@ -96,7 +112,7 @@
                       <option value="{{region.id}}">{{region.nombre}}</option>
                       {% endfor %}
                   </select>
-              </div>
+                </div>
             </div>
             <br>
             <div class="form-group row">
@@ -106,7 +122,7 @@
                     <option value="-1" selected>Seleccionar</option>
                 </select>
               </div>
-          </div>
+            </div>
             <br>
             <div class="form-group row">
                 <label for="id-direccion" class="col-sm-3 col-form-label">Dirección<span class="tx-danger">*</span></label>
@@ -121,14 +137,36 @@
                     <input type="text" class="form-control" id='id-telefono' name='telefono'>
                 </div>
             </div>
+            <br>
           </div>
           <br>
+          <div class="container-formulario-observacion" id="id-container-formulario-observacion" hidden>
+            <div class="form-group row">
+              <label for="id-observacion" class="col-sm-3 col-form-label">Observación</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" id="id-observacion" name="observacion" rows="3"></textarea>
+              </div>
+            </div>
+            <br>
+          </div>
+          
+          <div class="container-formulario-descuento" id="id-container-formulario-descuento" hidden>
+            <div class="form-group row">
+                <label for="id-rut" class="col-sm-3 col-form-label">Descuento<span class="tx-danger">*</span></label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id='id-descuento' name='descuento' placeholder="%">
+                </div>
+            </div>
+            <br>
+          </div>
           <div class="form-group row">
+            <br>
             <label for="id-correo-cliente" class="col-sm-3 col-form-label">Correo Electronico<span class="tx-danger">*</span></label>
             <div class="col-sm-9">
                 <input type="email" class="form-control" id='id-correo-cliente' name='correo-cliente' required>
             </div>
           </div>
+          <br>
         </form>
       </div>
       <div class="modal-footer">
@@ -210,9 +248,9 @@ $("#btn_guardando_camara").hide()
 $("#btn_enviando_correo").hide()
 
 function mostrarFormularioCliente(){
-    var checkBox = document.getElementById("id-check-datos-cliente");
+    var checkBox_cliente = document.getElementById("id-check-datos-cliente");
     // If the checkbox is checked, display the output text
-    if (checkBox.checked == true){
+    if (checkBox_cliente.checked == true){
         $("#id-container-formulario-cliente").attr('hidden', false)
         $("#id-nombre").attr('required', true)
         $("#id-rut").attr('required', true)
@@ -230,6 +268,30 @@ function mostrarFormularioCliente(){
         $("#id-giro").attr('required', false)
         $("#id-comuna").attr('required', false)
         $("#id-region").attr('required', false)
+    }
+}
+
+function mostrarFormularioDescuento(){
+    var checkBox_descuento = document.getElementById("id-check-datos-descuento");
+    // If the checkbox is checked, display the output text
+    if (checkBox_descuento.checked == true){
+        $("#id-container-formulario-descuento").attr('hidden', false)
+        $("#id-descuento").attr('required', true)
+    } else {
+        $("#id-container-formulario-descuento").attr('hidden', true)
+        $("#id-descuento").attr('required', false)
+    }
+}
+
+function mostrarFormularioObservacion(){
+    var checkBox_observacion = document.getElementById("id-check-datos-observacion");
+    // If the checkbox is checked, display the output text
+    if (checkBox_observacion.checked == true){
+        $("#id-container-formulario-observacion").attr('hidden', false)
+        $("#id-observacion").attr('required', true)
+    } else {
+        $("#id-container-formulario-observacion").attr('hidden', true)
+        $("#id-observacion").attr('required', false)
     }
 }
 
