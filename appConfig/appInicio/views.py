@@ -14,7 +14,7 @@ from email.message import EmailMessage
 import smtplib
 
 # APP's
-from appCamara.models import Camara
+from appCamara.models import Camara, ValorTransporte
 from appInicio.models import Region, Provincia, Comuna
 from appDocumento.documentos.crear_cotizacion import crearCotizacion
 from appDocumento.correos.envio_correo_cotizacion import enviarCorreoCotizacion
@@ -29,6 +29,7 @@ def inicio(request):
     _camaras = Camara.objects.filter(registroActivo=True)
     _regiones = Region.objects.filter(registroActivo=True)
     _comunas = Comuna.objects.filter(registroActivo=True)
+    _valor_x_km = ValorTransporte.objects.latest('registroFechaCreacion')
     _correlativo = 0
     for _camara in _camaras:
         _correlativo += 1
@@ -49,6 +50,7 @@ def inicio(request):
         'camaras': _data,
         'regiones': _regiones,
         'comunas': _comunas,
+        'valor_km': str(round(_valor_x_km.valor, 0)).replace(',', '.')
     }
     return render(request, "inicio.html", context=_context)
 
@@ -136,4 +138,16 @@ def guardarCamaraFrio(request):
         except:
             _respuesta = False
     json = { 'respuesta': _respuesta }
+    return JsonResponse(json, safe=False)
+
+def cambiarValorKm(request):
+    _respuesta = False
+    if request.method == 'POST':
+        _valor = request.POST.get('valor')
+        try:
+            _nuevo = ValorTransporte.objects.create(valor=_valor)
+            _respuesta = True
+        except:
+            _respuesta = False
+    json = { 'respuesta': _respuesta, 'valor': _valor }
     return JsonResponse(json, safe=False)
