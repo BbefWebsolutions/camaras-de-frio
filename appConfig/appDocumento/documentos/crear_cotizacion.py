@@ -4,7 +4,8 @@ from reportlab.lib.pagesizes import A4, letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
-from appCamara.models import Camara
+from appCamara.models import Camara, Cotizacion
+from appCamara.dx import correlativoCotizacion
 
 pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
@@ -19,29 +20,37 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     _comuna_cliente = cliente.comuna.nombre.upper() if cliente else ''
     _ciudad_cliente = cliente.region.nombre.upper() if cliente else ''
     _fecha_emision = datetime.now().date().strftime("%d/%m/%Y")
+    _total_sub_neto = 0
     _total_neto = 0
     _valor_descuento = 0
+    _total = 0
 
     # VALOR INICIAL
-    _total_neto += camara.valorNeto
+    _total_sub_neto += camara.valorNeto
     _valor_intalacion = Decimal(camara.valorNeto * Decimal(0.15))
-    _total_neto += _valor_intalacion
+    _total_sub_neto += _valor_intalacion
 
     # CALCULAR VALOR POR KM
     if cliente and cliente.region.codigo_iso != 'CL-RM':
-        _valor_km = Decimal(cliente.region.km * 2000)
-        _total_neto += _valor_km
+        _valor_km = Decimal(cliente.region.km * 1700)
+        _total_sub_neto += _valor_km
+
+    _total_neto = _total_sub_neto
 
     # REALIZAR EL DESCUENTO AL VALOR NETO
     if Decimal(descuento)>0:
-        _valor_descuento = _total_neto * (Decimal(descuento)/100)
-        _total_neto = _total_neto - _valor_descuento
+        _valor_descuento = _total_sub_neto * (Decimal(descuento)/100)
+        _total_neto -= _valor_descuento
+
 
     # CALCULAR VALOR IVA
-    _valorIva = Decimal(_total_neto * Decimal(0.19))
+    _valorIva = Decimal(_total_sub_neto * Decimal(0.19))
 
     # TOTAL DE LA COTIZACIÓN
     _total = _total_neto + _valorIva
+
+    _correlativo = correlativoCotizacion();
+    _cotizacion = Cotizacion.objects.create(observacion=observacion, correlativo=int(_correlativo), tipo_id=1, cliente=cliente, camara=camara, descuento=descuento, subNeto=_total_sub_neto, neto=_total_neto, iva=_valorIva, total=_total)
     
 
     w, h = letter
@@ -90,7 +99,7 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     # NUMERO FACTURA
     c.setFillColor('red')
     c.setFont('VeraBd', 10)
-    c.drawString(453, h-90, 'N° 3000')
+    c.drawString(453, h-90, 'N° '+str(_correlativo))
 
     # LOGO 2
     c.drawImage("static/assets/img/cotizacion/logo_camara_frio.png", 40, h-180, width=112, height=50)
@@ -351,29 +360,6 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
         c.setFont('Vera', 6)
         c.drawRightString(580, h-+_height, str('$ '+'{:,.0f}'.format(_valor_km)).replace(',', '.'))
 
-    if Decimal(descuento)>0:
-        _height += 10
-        # DATO DE DESCUENTO
-        # descrpción de la descuento
-        c.setFillColor('black')
-        c.setFont('Vera', 6)
-        c.drawString(103, h-+_height, 'Descuento autorizado : '+descuento+'%')
-
-        # cantidad de la descuento
-        c.setFillColor('black')
-        c.setFont('Vera', 6)
-        c.drawRightString(345, h-+_height, '1')
-
-        # precio unitario de la descuento
-        c.setFillColor('black')
-        c.setFont('Vera', 6)
-        c.drawRightString(425, h-+_height, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
-
-        # precio valor de la descuento
-        c.setFillColor('black')
-        c.setFont('Vera', 6)
-        c.drawRightString(580, h-+_height, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
-
     # RECTANGULO DE TOTALES
     c.setLineWidth(0.1)
     c.setStrokeColor('black')
@@ -382,22 +368,22 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     # DESCUENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('VeraBd', 8)
-    c.drawString(450, h-662, 'Descuentos: ')
+    c.drawString(450, h-662, 'Sub Neto: ')
 
     # DATO DESCUENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-662, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
+    c.drawRightString(584, h-662, str('$ '+'{:,.0f}'.format(_total_sub_neto)).replace(',', '.'))
 
     # EXENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('VeraBd', 8)
-    c.drawString(450, h-674, 'Exento: ')
+    c.drawString(450, h-674, 'Descuento: ('+descuento+'%)' )
 
     # DATO EXENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('Vera', 8)
-    c.drawRightString(584, h-674, '$ 0')
+    c.drawRightString(584, h-674, str('$ - '+'{:,.0f}'.format(_valor_descuento)).replace(',', '.'))
 
     # NETO DE CUADRO TOTALES
     c.setFillColor('black')

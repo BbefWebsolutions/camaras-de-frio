@@ -1,5 +1,6 @@
 from django.http import JsonResponse
-from appCamara.models import Camara
+from django.db.models import Max
+from appCamara.models import Camara, Cotizacion
 
 def jsonListarCamaras(request):
     _data = []
@@ -14,3 +15,12 @@ def jsonListarCamaras(request):
         }
         _data.append(_item)
     return JsonResponse(_data, safe=False)
+
+def correlativoCotizacion():
+    _correlativo = 0
+    _cotizacion = Cotizacion.objects.filter(registroActivo=True).aggregate(maximo=Max('correlativo'))
+    if _cotizacion['maximo']:
+        _correlativo = _cotizacion['maximo'] + 1
+    else:
+        _correlativo = 3211
+    return _correlativo
