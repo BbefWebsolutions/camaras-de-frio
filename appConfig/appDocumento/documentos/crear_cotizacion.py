@@ -4,7 +4,8 @@ from reportlab.lib.pagesizes import A4, letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
-from appCamara.models import Camara, Cotizacion
+from django.db.models import Max
+from appCamara.models import Camara, Cotizacion, ValorTransporte
 from appCamara.dx import correlativoCotizacion
 
 pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
@@ -20,6 +21,7 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     _comuna_cliente = cliente.comuna.nombre.upper() if cliente else ''
     _ciudad_cliente = cliente.region.nombre.upper() if cliente else ''
     _fecha_emision = datetime.now().date().strftime("%d/%m/%Y")
+    _valor_x_km = ValorTransporte.objects.latest('registroFechaCreacion')
     _total_sub_neto = 0
     _total_neto = 0
     _valor_descuento = 0
@@ -32,7 +34,7 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
 
     # CALCULAR VALOR POR KM
     if cliente and cliente.region.codigo_iso != 'CL-RM':
-        _valor_km = Decimal(cliente.region.km * 1700)
+        _valor_km = Decimal(cliente.region.km * _valor_x_km.valor)
         _total_sub_neto += _valor_km
 
     _total_neto = _total_sub_neto

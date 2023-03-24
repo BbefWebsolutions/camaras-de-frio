@@ -79,3 +79,18 @@ class Cotizacion(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class ValorTransporte(models.Model):
+    valor = models.DecimalField(max_digits=20, decimal_places=2, null = True, blank = True, default = None, verbose_name = 'Valor x KM')
+    ### Datos de Log ###
+    registroActivo = models.BooleanField( default = True, verbose_name = 'Registro Activo' )
+    registroFechaCreacion = models.DateTimeField( null=False, blank=False, auto_now_add=True, verbose_name = 'Fecha de Creación')
+    registroFechaModificacion = models.DateTimeField( null=False, blank=False, auto_now=True, verbose_name = 'Fecha de Modificación')
+
+    class Meta:
+        ordering = ['valor']
+        verbose_name = 'Valor KM'
+        verbose_name_plural = 'Valores KMs'
+
+    def __str__(self):
+        return str(self.valor)
