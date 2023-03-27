@@ -132,8 +132,8 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     # LOGO 4
     c.drawImage("static/assets/img/cotizacion/logo_sec.png", 420, h-176, width=70, height=45)
 
-    # LOGO SATIFACCIÓN GARANTIZADA
-    # c.drawImage("static/assets/img/cotizacion/logo_satifaccion.png", 450, h-176, width=70, height=45)
+    # LOGO CAMARA CHILENA
+    c.drawImage("static/assets/img/cotizacion/camara_chile.png", 495, h-166, width=80, height=25)
 
     # RECTANGULO DATOS CLIENTE
     c.setLineWidth(0.3)
@@ -380,7 +380,7 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     # EXENTO DE CUADRO TOTALES
     c.setFillColor('black')
     c.setFont('VeraBd', 8)
-    c.drawString(450, h-674, 'Descuento: ('+descuento+'%)' )
+    c.drawString(450, h-674, 'Descuento: ('+str(descuento)+'%)' )
 
     # DATO EXENTO DE CUADRO TOTALES
     c.setFillColor('black')
@@ -419,6 +419,11 @@ def crearCotizacion(camara=None, correo=None, observacion=None, descuento=None, 
     c.setFont('Vera', 8)
     c.drawRightString(584, h-710,'$ '+str('{:,.0f}'.format(_total)).replace(',', '.'))
     # c.drawString(570, h-710, '$ 0')
+
+    # MENSAJE DE LETRA CHICA
+    c.setFillColor('black')
+    c.setFont('Vera', 5)
+    c.drawString(22, h-728, 'Cotización válida por 10 días desde la fecha que se realizó el documento, en caso de consultas, se debe contactar al número +569 42 76 8657, +569 87 58 6070 o al correo electrónico contacto@camarasdefrio.com')
 
     # LOGO KUKA
     c.drawImage("static/assets/img/cotizacion/logo_kuka.png", 20, h-778, width=70, height=15)

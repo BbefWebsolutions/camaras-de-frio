@@ -8,6 +8,7 @@ urlpatterns = [
     ### CAMARA
     path('guardar-camara-frio/', views.guardarCamaraFrio, name='guardar-camara-frio'),
     path('cambiar-valor-km/', views.cambiarValorKm, name='cambiar-valor-km'),
+    path('cambiar-precio-camara/', views.cambiarPrecioCamara, name='cambiar-precio-camara'),
     ### EMAIL
     path('envio-correo-prueba/', views.enviarCorreoCotizacion, name='envio-correo-prueba'),
     path('envio-correo-cliente/', views.enviarCorreoCliente, name='envio-correo-cliente'),

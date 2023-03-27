@@ -29,7 +29,7 @@ def inicio(request):
     _camaras = Camara.objects.filter(registroActivo=True)
     _regiones = Region.objects.filter(registroActivo=True)
     _comunas = Comuna.objects.filter(registroActivo=True)
-    _valor_x_km = ValorTransporte.objects.latest('registroFechaCreacion')
+    _valor_x_km = ValorTransporte.objects.filter(registroActivo=True, valor__isnull=False).latest('registroFechaCreacion')
     _correlativo = 0
     for _camara in _camaras:
         _correlativo += 1
@@ -146,6 +146,34 @@ def cambiarValorKm(request):
         _valor = request.POST.get('valor')
         try:
             _nuevo = ValorTransporte.objects.create(valor=_valor)
+            _respuesta = True
+        except:
+            _respuesta = False
+    json = { 'respuesta': _respuesta, 'valor': _valor }
+    return JsonResponse(json, safe=False)
+
+def cambiarPrecioCamara(request):
+    _respuesta = False
+    _camaras = Camara.objects.filter(registroActivo=True)
+    if request.method == 'POST':
+        _valor = Decimal(request.POST.get('precio'))
+        _porcentaje = Decimal(_valor/100)
+        try:
+            if _valor > 0:
+                for _camara in _camaras:
+                    _valor_neto = _camara.valorNeto + (_camara.valorNeto * _porcentaje)
+                    _valor_iva = _valor_neto * (Decimal(1.19))
+                    _camara.valorNeto = _valor_neto
+                    _camara.valorIva = _valor_iva
+                    _camara.save()
+            elif _valor < 0:
+                _porcentaje *= -1
+                for _camara in _camaras:
+                    _valor_neto = _camara.valorNeto - (_camara.valorNeto * _porcentaje)
+                    _valor_iva = _valor_neto * (Decimal(1.19))
+                    _camara.valorNeto = _valor_neto
+                    _camara.valorIva = _valor_iva
+                    _camara.save()
             _respuesta = True
         except:
             _respuesta = False
