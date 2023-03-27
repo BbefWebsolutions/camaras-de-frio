@@ -9,7 +9,7 @@
 </div>
 
 <div class="d-grid gap-2 d-flex justify-content-end">
-    <!-- <button type="button" class="btn btn-default"><i class="fa-solid fa-sort-down"></i></button> -->
+    <button type="button" class="btn btn-default" onclick="abrirModalSubirBajarValor()"><i class="fa-solid fa-up-down"></i></button>
     <button type="button" class="btn btn-default" onclick="abrirModalCambiarValorKm()"><i class="fa-solid fa-truck-arrow-right"></i></button>
     <button type="button" class="btn btn-default" onclick="abrirModalAgregarCamara()"><i class="fa-regular fa-plus"></i></button>
 </div>
@@ -278,6 +278,37 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL SUBIR O BAJAR PRECIOS-->
+<div class="modal fade" id="modalSubirBajarPrecio" tabindex="-1" aria-labelledby="modalSubirBajarPrecioLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSubirBajarPrecioTitulo">Cambiar Precios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formCambiarPrecioCamara" enctype="multipart/form-data" data-parsley-validate >
+          {% csrf_token%}
+          <div class="form-group row">
+              <label for="id-valor-nuevo" class="col-sm-3 col-form-label">Porcentaje<span class="tx-danger">*</span></label>
+              <div class="col-sm-2">
+                  <input type="number" class="form-control" id='id-precio-nuevo' placeholder="%" name='precio-nuevo' required>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-regular fa-circle-xmark"></i> Cerrar</button>
+        <button class="btn btn-primary" id="btn_guardando_precio" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Cargando...
+        </button>
+        <button type="button" class="btn btn-primary" id="btn_guardar_precio" onclick="cambiaPrecioCamaras()"><i class="fa-solid fa-floppy-disk"></i> Cambiar Valor</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block partial_js_script %}
@@ -285,6 +316,7 @@
 $("#btn_guardando_camara").hide()
 $("#btn_enviando_correo").hide()
 $("#btn_guardando_valor").hide()
+$("#btn_guardando_precio").hide()
 
 function mostrarFormularioCliente(){
     var checkBox_cliente = document.getElementById("id-check-datos-cliente");
@@ -348,6 +380,10 @@ function abrirModalAgregarCamara(){
 
 function abrirModalCambiarValorKm(){
   $('#modalCambiarValorKM').modal('show');
+}
+
+function abrirModalSubirBajarValor(){
+  $('#modalSubirBajarPrecio').modal('show');
 }
 
 $('#btn_enviar_correo').click(function () {
@@ -473,6 +509,55 @@ function cambiarValorKilometro(){
           });  
         }
         // location.reload()
+      }, 2000)
+    },
+    // Tell jQuery not to process data or worry about content-type
+    // You must include these options!
+    cache: false,
+    contentType: false,
+    processData: false,
+})
+}
+}
+
+function cambiaPrecioCamaras(){
+  const formulario = $('#formCambiarPrecioCamara'); 
+  if (formulario.parsley().validate()) {
+    $("#btn_guardar_precio").hide()
+    $("#btn_guardando_precio").show()
+    let formData = new FormData();
+    formData.append('csrfmiddlewaretoken', formulario.find('input[name = csrfmiddlewaretoken]').val());
+    formData.append('precio', formulario.find('input[name = precio-nuevo]').val());
+
+    $.ajax({
+    url: "{% url 'cambiar-precio-camara' %}",
+    type: 'POST',
+    data: formData,
+    dataType: "json",
+    success: function (data) {
+      setTimeout(function(){
+        $("#btn_guardar_precio").show()
+        $("#btn_guardando_precio").hide()
+        $('#modalSubirBajarPrecio').modal('hide');
+        document.getElementById("formCambiarPrecioCamara").reset();
+        if (data.respuesta==true) {
+          notify = new PNotify({
+              title: 'Acción Exitosa!',
+              text: 'Se ha actualizado los valores de las camaras',
+              type: 'success',
+              styling: 'bootstrap3',
+              delay: 3000
+          });    
+        }else{
+          notify = new PNotify({
+              title: 'Error!',
+              text: 'ha ocurrido un error!',
+              type: 'error',
+              styling: 'bootstrap3',
+              delay: 3000
+          });  
+        }
+        location.reload()
       }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
