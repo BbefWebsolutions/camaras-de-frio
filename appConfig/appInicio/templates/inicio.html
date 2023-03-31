@@ -295,7 +295,7 @@
           <div class="form-group row">
               <label for="id-valor-nuevo" class="col-sm-3 col-form-label">Porcentaje<span class="tx-danger">*</span></label>
               <div class="col-sm-2">
-                  <input type="number" class="form-control" id='id-precio-nuevo' placeholder="%" name='precio-nuevo' step="0.00001" required>
+                  <input type="number" class="form-control" id='id-precio-nuevo' placeholder="%" name='precio-nuevo' step="0.0000000001" required>
               </div>
           </div>
         </form>
@@ -525,51 +525,53 @@ function cambiarValorKilometro(){
 
 function cambiaPrecioCamaras(){
   const formulario = $('#formCambiarPrecioCamara'); 
+  alert('entro a la fucnion cambiar')
   if (formulario.parsley().validate()) {
-    $("#btn_guardar_precio").hide()
-    $("#btn_guardando_precio").show()
-    let formData = new FormData();
-    formData.append('csrfmiddlewaretoken', formulario.find('input[name = csrfmiddlewaretoken]').val());
-    formData.append('precio', formulario.find('input[name = precio-nuevo]').val());
-
-    $.ajax({
-    url: "{% url 'cambiar-precio-camara' %}",
-    type: 'POST',
-    data: formData,
-    dataType: "json",
-    success: function (data) {
-      setTimeout(function(){
-        $("#btn_guardar_precio").show()
-        $("#btn_guardando_precio").hide()
-        $('#modalSubirBajarPrecio').modal('hide');
-        document.getElementById("formCambiarPrecioCamara").reset();
-        if (data.respuesta==true) {
-          notify = new PNotify({
-              title: 'Acción Exitosa!',
-              text: 'Se ha actualizado los valores de las camaras',
-              type: 'success',
-              styling: 'bootstrap3',
-              delay: 3000
-          });    
-        }else{
-          notify = new PNotify({
-              title: 'Error!',
-              text: 'ha ocurrido un error!',
-              type: 'error',
-              styling: 'bootstrap3',
-              delay: 3000
-          });  
-        }
-        $("#tablaCamaras").dxDataGrid("instance").refresh();
-      }, 2000)
-    },
-    // Tell jQuery not to process data or worry about content-type
-    // You must include these options!
-    cache: false,
-    contentType: false,
-    processData: false,
-})
-}
+    alert('valida')
+      $("#btn_guardar_precio").hide()
+      $("#btn_guardando_precio").show()
+      let formData = new FormData();
+      formData.append('csrfmiddlewaretoken', formulario.find('input[name = csrfmiddlewaretoken]').val());
+      formData.append('precio', formulario.find('input[name = precio-nuevo]').val());
+      $.ajax({
+        url: "{% url 'cambiar-precio-camara' %}",
+        type: 'POST',
+        data: formData,
+        dataType: "json",
+        success: function (data) {
+          alert(1)
+          setTimeout(function(){
+            $("#btn_guardar_precio").show()
+            $("#btn_guardando_precio").hide()
+            $('#modalSubirBajarPrecio').modal('hide');
+            document.getElementById("formCambiarPrecioCamara").reset();
+            if (data.respuesta==true) {
+              notify = new PNotify({
+                  title: 'Acción Exitosa!',
+                  text: 'Se ha actualizado los valores de las camaras',
+                  type: 'success',
+                  styling: 'bootstrap3',
+                  delay: 3000
+              });    
+            }else{
+              notify = new PNotify({
+                  title: 'Error!',
+                  text: 'ha ocurrido un error!',
+                  type: 'error',
+                  styling: 'bootstrap3',
+                  delay: 3000
+              });  
+            }
+            $("#tablaCamaras").dxDataGrid("instance").refresh();
+          }, 2000)
+        },
+        // Tell jQuery not to process data or worry about content-type
+        // You must include these options!
+        cache: false,
+        contentType: false,
+        processData: false,
+    })
+  }
 }
 
 function buscarComunas(value) {
