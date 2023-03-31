@@ -39,7 +39,7 @@ class Camara(models.Model):
         verbose_name_plural = 'Camaras'
 
     def __str__(self):
-        return self.nombre
+        return str(self.nombre)
     
 class TipoPago(models.Model):
     descripcion = models.CharField(max_length=255, null = True, blank = True, default = None, verbose_name = 'Descripcion')
@@ -54,7 +54,7 @@ class TipoPago(models.Model):
         verbose_name_plural = 'Tipos de Pagos'
 
     def __str__(self):
-        return self.descripcion
+        return str(self.descripcion)
     
 class Cotizacion(models.Model):
     observacion = models.CharField(max_length=250, null=True, blank=True, default=None, verbose_name='Observación')
@@ -78,7 +78,7 @@ class Cotizacion(models.Model):
         verbose_name_plural = 'Cotizaciones'
 
     def __str__(self):
-        return self.nombre
+        return str(self.correlativo)
     
 class ValorTransporte(models.Model):
     valor = models.DecimalField(max_digits=20, decimal_places=2, null = True, blank = True, default = None, verbose_name = 'Valor x KM')
