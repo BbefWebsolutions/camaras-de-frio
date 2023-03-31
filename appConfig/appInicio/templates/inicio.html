@@ -525,9 +525,7 @@ function cambiarValorKilometro(){
 
 function cambiaPrecioCamaras(){
   const formulario = $('#formCambiarPrecioCamara'); 
-  alert('entro a la fucnion cambiar')
   if (formulario.parsley().validate()) {
-    alert('valida')
       $("#btn_guardar_precio").hide()
       $("#btn_guardando_precio").show()
       let formData = new FormData();
@@ -539,7 +537,6 @@ function cambiaPrecioCamaras(){
         data: formData,
         dataType: "json",
         success: function (data) {
-          alert(1)
           setTimeout(function(){
             $("#btn_guardar_precio").show()
             $("#btn_guardando_precio").hide()
