@@ -8,13 +8,13 @@
   <h4 class='text-center'>Listado de Camaras de Frio</h4>
 </div>
 
-<div class="d-grid gap-2 d-flex justify-content-end">
+<!-- <div class="d-grid gap-2 d-flex justify-content-end">
     <button type="button" class="btn btn-default" onclick="abrirModalSubirBajarValor()"><i class="fa-solid fa-up-down"></i></button>
     <button type="button" class="btn btn-default" onclick="abrirModalCambiarValorKm()"><i class="fa-solid fa-truck-arrow-right"></i></button>
     <button type="button" class="btn btn-default" onclick="abrirModalAgregarCamara()"><i class="fa-regular fa-plus"></i></button>
-</div>
+</div> -->
 
-<table class="table table-responsive table-bordered">
+<!-- <table class="table table-responsive table-bordered">
   <thead>
     <tr style="background-color: rgb(198, 198, 198); ">
       <th scope="col">N°</th>
@@ -40,7 +40,9 @@
     </tr>
     {% endfor %}
   </tbody>
-</table>
+</table> -->
+<div id="tablaCamaras"></div>
+<br><br><br>
 
 <!-- Modal -->
 <div class="modal fade" id="modalEnviarCorreo" tabindex="-1" aria-labelledby="modalEnviarCorreoLabel" aria-hidden="true">
@@ -371,7 +373,7 @@ function separadorMiles(numero){
 }
 
 function abrirModalEnviarCorreo(value) {
-  $("#numero-camara").val(value.id)
+  $("#numero-camara").val(value)
 }
 
 function abrirModalAgregarCamara(){
@@ -389,6 +391,7 @@ function abrirModalSubirBajarValor(){
 $('#btn_enviar_correo').click(function () {
   const formulario = $('#formEnviarCorreoCliente')
   if (formulario.parsley().validate()) {
+    console.log($("#numero-camara").val())
     $("#btn_enviar_correo").hide()
     $("#btn_enviando_correo").show()
     $.post(formulario.attr('action'), formulario.serialize(), function (response) {
@@ -458,7 +461,7 @@ function guardaCamaraDeFrio(){
               delay: 3000
           });  
         }
-        // location.reload()
+        $("#tablaCamaras").dxDataGrid("instance").refresh();
       }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
@@ -508,7 +511,7 @@ function cambiarValorKilometro(){
               delay: 3000
           });  
         }
-        // location.reload()
+        $("#tablaCamaras").dxDataGrid("instance").refresh();
       }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
@@ -557,7 +560,7 @@ function cambiaPrecioCamaras(){
               delay: 3000
           });  
         }
-        location.reload()
+        $("#tablaCamaras").dxDataGrid("instance").refresh();
       }, 2000)
     },
     // Tell jQuery not to process data or worry about content-type
@@ -568,36 +571,6 @@ function cambiaPrecioCamaras(){
 })
 }
 }
-
-// $('#btn_guardar_camara').click(function () {
-//   const formulario = $('#formEnviarGuardarCamara')
-//   if (formulario.parsley().validate()) {
-//     $("#btn_guardar_camara").hide()
-//     $("#btn_guardando_camara").show()
-//     const divDataGrid = $(this).attr('data-id-grid')
-//     $.post(formulario.attr('action'), formulario.serialize(), function (response) {
-//       if (response.accionEjecutada) {
-//             notify = new PNotify({
-//                 title: 'Acción exitosa',
-//                 text: 'Correo enviado correctamente!',
-//                 type: 'success',
-//                 styling: 'bootstrap3',
-//                 delay: 3000
-//             });
-//         }
-//         else {
-//             notify = new PNotify({
-//                 title: 'Acción no ejecutada',
-//                 text: 'No se ha podido realizar la acción',
-//                 type: 'error',
-//                 styling: 'bootstrap3',
-//                 delay: 3000
-//             });
-//         }
-//         // setTimeout(function(){location.reload();}, 3000);
-//     })
-//   }
-// });
 
 function buscarComunas(value) {
   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -630,5 +603,143 @@ function buscarComunas(value) {
     $('#id-comuna').append('<option value="-1" hidden selected>Seleccione</option>');
   }
 }
+
+$("#tablaCamaras").dxDataGrid({
+    dataSource: "{% url 'json-listar-camaras' %}",
+    showBorders: true,
+    showColumnLines: true,
+    showRowLines: true,
+    columnAutoWidth: true,
+    showColumnLines: true,
+    rowAlternationEnabled: true,
+    hoverStateEnabled: true,
+    showBorders: true,
+    scrolling: {
+      columnRenderingMode: 'virtual',
+    },
+    paging: {
+      enabled: false,
+    },
+    stateStoring: {
+      enabled: false,
+      type: "sessionStorage",
+      storageKey: "storage"
+    },
+    loadPanel: {
+      enabled: true
+    },
+    searchPanel: {
+      visible: true,
+      highlightCaseSensitive: true
+    },
+    paging: {
+      pageSize: 100
+    },
+    pager: {
+      showPageSizeSelector: true,
+      allowedPageSizes: [10, 25, 50, 250, 500, 1000, 2000],
+      showInfo: true
+    },
+    headerFilter: {
+      visible: true,
+      allowSearch: true
+    },
+    columnChooser: {
+      enabled: true,
+      mode: "select"
+    },
+    "export": {
+      enabled: true,
+      fileName: "Cámaras de frio",
+      allowExportSelectedData: false,
+    },
+    columns: [{
+      dataField: "#",
+      cellTemplate: function (cellElement, cellInfo) {
+        cellElement.text(cellInfo.row.rowIndex + 1)
+      },
+      allowHiding: false,
+      showInColumnChooser: false,
+    }, {
+      dataField: "nombre",
+      caption: "Nombre",
+      allowHiding: false,
+      showInColumnChooser: false,
+    }, {
+      dataField: "m2",
+      caption: "M²",
+      dataType: 'number',
+    }, {
+      dataField: "m3",
+      caption: "M³",
+      dataType: 'number',
+    },{
+      dataField: "neto",
+      caption: "Neto",
+      dataType: 'number',
+      format: 'currency',
+    },{
+      dataField: "iva",
+      caption: "IVA",
+      dataType: 'number',
+      format: 'currency',
+    },{
+      type: "buttons",
+      caption: "Enviar",
+      allowHiding: false,
+      fixed: true,
+      showInColumnChooser: false,
+      buttons: [{
+        hint: "Enviar Cotización",
+        template: function (container, options) {
+            $('<a/>').addClass('dx-link')
+            .text('Enviar')
+            .attr('title', 'Enviar Cotización')
+            .attr('target', '_black')
+            .appendTo(container);
+        },
+        onClick: function (e) {
+          let modal = $('#modalEnviarCorreo')
+          $("#numero-camara").val(e.row.data.id)
+          modal.modal('show')
+        },
+      }]
+    }], onContentReady: function (e) {
+        var $customButton = $('<div class="m-1" id="customButton">').dxButton({
+            icon: 'car', //or your custom icon
+            hint: "Editar Valor KM",
+            onClick: function () {
+              abrirModalCambiarValorKm();
+            }
+        });
+        var $descargar_reporte = $('<div class="m-1" id="descargar_reporte">').dxButton({
+            icon: 'add', //or your custom icon
+            hint: "Agregar Cámara",
+            onClick: function () {
+              abrirModalAgregarCamara();
+            }
+        });
+        var $editarkm = $('<div class="m-1" id="editarkm">').dxButton({
+            icon: 'edit', //or your custom icon
+            hint: "Editar Precio",
+            onClick: function () {
+              abrirModalSubirBajarValor();
+            }
+        });
+        if (e.element.find('#editarkm').length == 0)
+            e.element
+                .find('.dx-toolbar-after')
+                .prepend($editarkm);
+        if (e.element.find('#customButton').length == 0)
+            e.element
+                .find('.dx-toolbar-after')
+                .prepend($customButton);
+
+        if (e.element.find('#descargar_reporte').length == 0)
+            e.element
+                .find('.dx-toolbar-after')
+                .prepend($descargar_reporte);
+    },
+});
 </script>
 {% endblock %}

@@ -54,26 +54,6 @@ def inicio(request):
     }
     return render(request, "inicio.html", context=_context)
 
-def sendEmail(correo, camara, cliente=None):
-    _subject = 'Cotización de Camara de Frío'
-    _context = {
-        'dominio': 'localhost:8000',
-        'protocolo': 'http',
-        'correo': correo,
-        'camara': camara,
-    }
-    _plantilla = render_to_string('email/email_cotizacion.html', context = _context)
-    _receivers_list = [correo]
-    _respuesta = send_mail(
-        subject = _subject,
-        message = strip_tags(_plantilla),
-        from_email = config('EMAIL_HOST_USER'),
-        recipient_list = _receivers_list,
-        fail_silently = False,
-        html_message = _plantilla,
-    )
-    return _respuesta
-
 def enviarCorreoCliente(request):
     _enviado = None
     _respuesta = 0

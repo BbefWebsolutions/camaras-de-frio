@@ -13,5 +13,6 @@ urlpatterns = [
     path('envio-correo-prueba/', views.enviarCorreoCotizacion, name='envio-correo-prueba'),
     path('envio-correo-cliente/', views.enviarCorreoCliente, name='envio-correo-cliente'),
     ### JSON
-    path('json-listar-comuna/<int:id>', dx.jsonListarComunas, name='json-listar-comunas')
+    path('json-listar-comuna/<int:id>', dx.jsonListarComunas, name='json-listar-comunas'),
+    path('json-listar-camaras/', dx.jsonListarCamaras, name='json-listar-camaras')
 ]
