@@ -603,31 +603,38 @@ function buscarComunas(value) {
   }
 }
 
+function tamanoPantallaUsuario(){
+    var value = screen.width
+    if(value>1300){
+      return 65
+    }else if(value < 400){
+      return 35
+    }else{
+      return 45
+    }
+}
+
 $("#tablaCamaras").dxDataGrid({
     dataSource: "{% url 'json-listar-camaras' %}",
     showBorders: true,
     showColumnLines: true,
     showRowLines: true,
-    columnAutoWidth: true,
     showColumnLines: true,
     rowAlternationEnabled: true,
     hoverStateEnabled: true,
     showBorders: true,
+    columnAutoWidth: true,
     scrolling: {
       columnRenderingMode: 'virtual',
     },
     paging: {
       enabled: false,
     },
-    stateStoring: {
-      enabled: false,
-      type: "sessionStorage",
-      storageKey: "storage"
-    },
     loadPanel: {
       enabled: true
     },
     searchPanel: {
+      width: 130,
       visible: true,
       highlightCaseSensitive: true
     },
@@ -638,10 +645,6 @@ $("#tablaCamaras").dxDataGrid({
       showPageSizeSelector: true,
       allowedPageSizes: [10, 25, 50, 250, 500, 1000, 2000],
       showInfo: true
-    },
-    headerFilter: {
-      visible: true,
-      allowSearch: true
     },
     columnChooser: {
       enabled: true,
@@ -684,9 +687,11 @@ $("#tablaCamaras").dxDataGrid({
       format: 'currency',
     },{
       type: "buttons",
-      caption: "Enviar",
-      allowHiding: false,
+      caption: "Botones",
       fixed: true,
+      width: tamanoPantallaUsuario(),
+      alignment: "center",
+      allowHiding: false,
       showInColumnChooser: false,
       buttons: [{
         hint: "Enviar Cotización",
@@ -698,27 +703,28 @@ $("#tablaCamaras").dxDataGrid({
             .appendTo(container);
         },
         onClick: function (e) {
+          alert(screen.width)
           let modal = $('#modalEnviarCorreo')
           $("#numero-camara").val(e.row.data.id)
           modal.modal('show')
         },
       }]
     }], onContentReady: function (e) {
-        var $customButton = $('<div class="m-1" id="customButton">').dxButton({
+        var $editar_km = $('<div style="margin-right: 5px">').dxButton({
             icon: 'car', //or your custom icon
             hint: "Editar Valor KM",
             onClick: function () {
               abrirModalCambiarValorKm();
             }
         });
-        var $descargar_reporte = $('<div class="m-1" id="descargar_reporte">').dxButton({
+        var $descargar_reporte = $('<div style="margin-right: 5px">').dxButton({
             icon: 'add', //or your custom icon
             hint: "Agregar Cámara",
             onClick: function () {
               abrirModalAgregarCamara();
             }
         });
-        var $editarkm = $('<div class="m-1" id="editarkm">').dxButton({
+        var $editarkm = $('<div>').dxButton({
             icon: 'edit', //or your custom icon
             hint: "Editar Precio",
             onClick: function () {
@@ -729,10 +735,10 @@ $("#tablaCamaras").dxDataGrid({
             e.element
                 .find('.dx-toolbar-after')
                 .prepend($editarkm);
-        if (e.element.find('#customButton').length == 0)
+        if (e.element.find('#editar_km').length == 0)
             e.element
                 .find('.dx-toolbar-after')
-                .prepend($customButton);
+                .prepend($editar_km);
 
         if (e.element.find('#descargar_reporte').length == 0)
             e.element

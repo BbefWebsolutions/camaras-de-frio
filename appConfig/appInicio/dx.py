@@ -36,6 +36,7 @@ def jsonListarCamaras(request):
                 'uf': _camara.uf if _camara.uf else '',
                 'neto': _camara.valorNeto if _camara.valorNeto else '',
                 'iva': _camara.valorIva if _camara.valorIva else '',
+                'ficha': 'media/'+str(_camara.ficha),
             }
             _data.append(_item)
     except ValueError:

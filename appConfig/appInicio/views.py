@@ -43,9 +43,10 @@ def inicio(request):
             'm3': str(_camara.m3).replace('.', ','),
             'valorNeto': _neto,
             'valorIva': _iva,
+            'ficha': str(_camara.ficha),
         }
         _data.append(_item)
-        
+            
     _context = {
         'camaras': _data,
         'regiones': _regiones,
